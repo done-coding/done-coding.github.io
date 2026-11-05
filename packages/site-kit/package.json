@@ -1,0 +1,13 @@
+{
+  "name": "@done-coding/site-kit",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.mjs",
+    "./analytics": "./analytics.mjs",
+    "./theme": "./theme/index.mjs"
+  },
+  "dependencies": {
+    "vitepress": "^1.6.4"
+  }
+}

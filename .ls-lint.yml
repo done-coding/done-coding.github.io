@@ -1,5 +1,5 @@
 ls:
-  "{apps,scripts}/**":
+  "{apps,scripts,packages}/**":
     .dir: kebab-case | lowercase
     .mjs: kebab-case | lowercase
     .cjs: kebab-case | lowercase
@@ -25,3 +25,5 @@ ignore:
   - dist
   - '**/dist/**'
   - 'apps/*-site/content/**'
+  - '**/.vitepress/cache/**'
+  - '**/.vitepress/.temp/**'

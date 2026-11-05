@@ -52,5 +52,12 @@ module.exports = {
     },
   ],
   // 构建产物和产品仓导出的内容不由本站维护。
-  ignorePatterns: ["node_modules", "**/dist/**", "apps/*-site/content/**"],
+  ignorePatterns: [
+    "node_modules",
+    "**/dist/**",
+    "apps/*-site/content/**",
+    "!.vitepress",
+    "**/.vitepress/cache/**",
+    "**/.vitepress/.temp/**",
+  ],
 };

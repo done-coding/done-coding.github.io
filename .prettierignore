@@ -1,3 +1,5 @@
 node_modules/
 **/dist/
 apps/*-site/content/
+**/.vitepress/cache/
+**/.vitepress/.temp/

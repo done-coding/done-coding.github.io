@@ -16,8 +16,9 @@ done-coding 的公开站点。每个 app 构建到一个 URL 路径，由 `pnpm 
 | `apps/portal` | `/` | 门户首页、404、隐私说明 |
 | `apps/forge-site` | `/forge/` | forge 的站点外壳：布局、导航、首页、统计接入 |
 | `apps/cli-site` | `/cli/` | cli 的站点外壳：布局、导航、首页、统计接入 |
+| `packages/site-kit` | 不发布 | 产品站共用的 VitePress 配置、主题和统计读取 |
 
-新增产品时加 `apps/<产品>-site` 并在 `site.config.json` 登记。
+新增产品时加 `apps/<产品>-site`，复用 `packages/site-kit`，并在 `site.config.json` 登记。
 
 ## 边界
 
