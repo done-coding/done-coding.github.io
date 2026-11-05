@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "declaration": false,
+    "types": [
+      "node"
+    ],
+    "esModuleInterop": true,
+    "pretty": true,
+    "moduleResolution": "NodeNext",
+    "lib": [
+      "ESNext"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "stripInternal": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": true,
+    "downlevelIteration": true,
+    "strictFunctionTypes": true,
+    "alwaysStrict": true,
+    "resolveJsonModule": true,
+    "module": "NodeNext",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "noEmit": true,
+    "allowJs": true
+  },
+  "exclude": [
+    "node_modules",
+    "**/dist/**",
+    "apps/*-site/content/**"
+  ],
+  "include": [
+    "apps/**/*.ts",
+    "apps/**/*.tsx",
+    "apps/**/*.js",
+    "apps/**/*.mjs",
+    "apps/**/*.cjs",
+    "scripts/**/*.ts",
+    "scripts/**/*.js",
+    "scripts/**/*.mjs",
+    "scripts/**/*.cjs"
+  ]
+}

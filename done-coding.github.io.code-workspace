@@ -1,0 +1,87 @@
+{
+  "folders": [
+    {
+      "name": "done-coding.github.io",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.eol": "\n",
+    "files.encoding": "utf8",
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "fileheader.configObj": {
+      "autoAdd": true,
+      "autoUpdateOnSave": true,
+      "wideSame": true,
+      "prohibitAutoAdd": [
+        "json",
+        "md",
+        "jsonc",
+        "xml",
+        "shellscript"
+      ]
+    },
+    "fileheader.customMade": {
+      "Description": "",
+      "Author": "git config user.name",
+      "Date": "Do not edit",
+      "LastEditors": "git config user.name",
+      "LastEditTime": "Do not edit"
+    },
+    "cSpell.ignorePaths": [
+      "**",
+      "!apps/**",
+      "!scripts/**",
+      "**/node_modules/**",
+      "**/dist/**",
+      "apps/*-site/content/**",
+      "pnpm-lock.yaml",
+      "**/**.code-workspace"
+    ],
+    "cSpell.words": [
+      "commitlint",
+      "preinstall",
+      "VITE"
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "[xml]": {
+      "editor.defaultFormatter": "redhat.vscode-xml"
+    },
+    "[shellscript]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[dotenv]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[ignore]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "vue",
+      "html"
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
+  },
+  "extensions": {
+    "recommendations": [
+      "OBKoro1.korofileheader",
+      "redhat.vscode-xml",
+      "foxundermoon.shell-format",
+      "streetsidesoftware.code-spell-checker",
+      "editorconfig.editorconfig",
+      "esbenp.prettier-vscode",
+      "wayou.vscode-todo-highlight",
+      "dbaeumer.vscode-eslint",
+      "usernamehw.errorlens",
+      "shd101wyy.markdown-preview-enhanced"
+    ]
+  }
+}

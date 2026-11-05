@@ -46,8 +46,11 @@ done-coding 的公开站点。每个 app 构建到一个 URL 路径，由 `pnpm 
 ```bash
 pnpm install
 pnpm verify
+pnpm lint
 ```
 
 ## 提交
+
+Git 钩子只保留 pre-commit 的 lint-staged，其他检查靠本节引导，不靠钩子阻塞。提交信息遵循 Conventional Commits；改动站点或脚本后运行 `pnpm lint` 和 `pnpm verify`，纯文案改动不用跑。
 
 显式 pathspec 提交，不用 `git add -A`。push 每次单独授权。提交文档不写本机家目录绝对路径。

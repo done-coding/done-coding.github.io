@@ -8,21 +8,30 @@ const problems = [];
 const htmlFiles = (dir) =>
   readdirSync(dir).flatMap((entry) => {
     const path = join(dir, entry);
-    if (statSync(path).isDirectory()) return htmlFiles(path);
+    if (statSync(path).isDirectory()) {
+      return htmlFiles(path);
+    }
     return path.endsWith(".html") ? [path] : [];
   });
 
-for (const { name, base } of apps)
-  if (!existsSync(join("dist", base, "index.html")))
+for (const { name, base } of apps) {
+  if (!existsSync(join("dist", base, "index.html"))) {
     problems.push(`${name} 缺少首页：${base}index.html`);
+  }
+}
 
 for (const file of htmlFiles("dist")) {
-  for (const [, href] of readFileSync(file, "utf8").matchAll(/(?:href|src)="(\/[^"#?]*)/g)) {
+  for (const [, href] of readFileSync(file, "utf8").matchAll(
+    /(?:href|src)="(\/[^"#?]*)/g,
+  )) {
     const target = join("dist", href);
     const found =
       existsSync(target) &&
-      (!statSync(target).isDirectory() || existsSync(join(target, "index.html")));
-    if (!found) problems.push(`${file} 的链接不存在：${href}`);
+      (!statSync(target).isDirectory() ||
+        existsSync(join(target, "index.html")));
+    if (!found) {
+      problems.push(`${file} 的链接不存在：${href}`);
+    }
   }
 }
 

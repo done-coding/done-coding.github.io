@@ -1,0 +1,28 @@
+{
+  "globalEnvData": {},
+  "collectEnvDataForm": [
+    {
+      "key": "name",
+      "label": "包名",
+      "initial": "done-coding-github-io"
+    },
+    {
+      "key": "description",
+      "label": "描述"
+    }
+  ],
+  "list": [
+    {
+      "input": "./package.json",
+      "mode": "replace"
+    },
+    {
+      "input": "./README.md",
+      "mode": "replace"
+    },
+    {
+      "input": "./done-coding.github.io.code-workspace",
+      "mode": "replace"
+    }
+  ]
+}
