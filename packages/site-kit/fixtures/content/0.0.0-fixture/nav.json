@@ -1,0 +1,10 @@
+[
+  { "text": "样例概览", "link": "overview" },
+  {
+    "text": "样例指南",
+    "items": [
+      { "text": "样例入门", "link": "guide/start.md" },
+      { "text": "样例目录页", "link": "guide/" }
+    ]
+  }
+]

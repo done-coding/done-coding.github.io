@@ -25,5 +25,7 @@ ignore:
   - dist
   - '**/dist/**'
   - 'apps/*-site/content/**'
+  - 'packages/site-kit/fixtures/**'
+  - '**/.generated/**'
   - '**/.vitepress/cache/**'
   - '**/.vitepress/.temp/**'

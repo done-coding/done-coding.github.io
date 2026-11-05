@@ -258,7 +258,14 @@ importers:
 
   apps/cli-site: {}
 
-  apps/forge-site: {}
+  apps/forge-site:
+    dependencies:
+      "@done-coding/site-kit":
+        specifier: workspace:*
+        version: link:../../packages/site-kit
+      vitepress:
+        specifier: ^1.6.4
+        version: 1.6.4(@algolia/client-search@5.61.0)(@types/node@18.19.130)(postcss@8.5.32)(search-insights@2.17.3)(typescript@5.9.3)
 
   apps/portal: {}
 
@@ -267,6 +274,9 @@ importers:
       vitepress:
         specifier: ^1.6.4
         version: 1.6.4(@algolia/client-search@5.61.0)(@types/node@18.19.130)(postcss@8.5.32)(search-insights@2.17.3)(typescript@5.9.3)
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.44(typescript@5.9.3)
 
 packages:
   "@algolia/abtesting@1.27.0":

@@ -6,15 +6,22 @@
 
 ```js
 // apps/<产品>-site/.vitepress/config.mjs
-import { defineSite } from "@done-coding/site-kit";
+import { defineProductSite } from "@done-coding/site-kit/product";
 
-export default defineSite({ base: "/<产品>/", title: "<产品>" });
+export default defineProductSite({
+  configUrl: import.meta.url,
+  base: "/<产品>/",
+  title: "<产品>",
+  tagline: "<一句话，只写可核实的事实>",
+});
 ```
 
 ```js
 // apps/<产品>-site/.vitepress/theme/index.mjs
 export { default } from "@done-coding/site-kit/theme";
 ```
+
+`defineProductSite` 读 `content/current.json` 指向的内容产物，校验后生成 `.generated/` 源目录（不进仓）：站点首页在 `<base>`，文档在 `<base>docs/`，演示原样发布到 `<base>demo/`。缺 `current.json` 时首页显示「文档建设中」，产物不合契约时构建失败并说明原因。
 
 ## 为什么选 VitePress
 
@@ -24,4 +31,4 @@ export { default } from "@done-coding/site-kit/theme";
 - 自带导航、侧栏和本地主题，外壳代码量小。
 - MIT 许可证。
 
-`smoke/` 是最小冒烟站点，由 `scripts/test-site.mjs` 构建到临时目录，不发布。
+`smoke/` 是最小冒烟站点，`fixtures/` 是内容产物样例，都只由 `scripts/test-site.mjs` 使用，不发布。

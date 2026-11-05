@@ -3,3 +3,4 @@ node_modules/
 apps/*-site/content/
 **/.vitepress/cache/
 **/.vitepress/.temp/
+**/.generated/

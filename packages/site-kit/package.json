@@ -5,9 +5,11 @@
   "exports": {
     ".": "./index.mjs",
     "./analytics": "./analytics.mjs",
-    "./theme": "./theme/index.mjs"
+    "./theme": "./theme/index.mjs",
+    "./product": "./product.mjs"
   },
   "dependencies": {
-    "vitepress": "^1.6.4"
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.13"
   }
 }

@@ -34,7 +34,7 @@ done-coding 的公开站点。每个 app 构建到一个 URL 路径，由 `pnpm 
 - `current.json`：`{ "version": "0.100.1", "source": "<产品仓>@<提交>" }`
 - `docs/`：Markdown 文档，站内链接用相对路径
 - `demo/`：可选，已构建的静态演示，由产品仓用 `/<产品>/demo/` 作 base 构建
-- `nav.json`：文档导航
+- `nav.json`：文档导航，非空数组，每项 `{ "text": 标题, "link"?: 相对 docs/ 的路径, "items"?: 子项 }`，`link` 和 `items` 至少有一个；`link` 可省略 `.md`，目录写成 `guide/`（对应 `guide/index.md`）
 
 产物不含源码和 source map。修改契约时，同时通知产品仓。
 
