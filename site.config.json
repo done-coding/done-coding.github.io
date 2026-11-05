@@ -1,0 +1,12 @@
+{
+  "origin": "https://done-coding.github.io",
+  "apps": [
+    { "name": "portal", "dir": "apps/portal", "base": "/" },
+    { "name": "forge-site", "dir": "apps/forge-site", "base": "/forge/" },
+    { "name": "cli-site", "dir": "apps/cli-site", "base": "/cli/" }
+  ],
+  "analytics": {
+    "websiteId": null,
+    "trackerUrl": "https://cloud.umami.is/script.js"
+  }
+}

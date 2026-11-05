@@ -1,0 +1,8 @@
+{
+  "name": "@done-coding/site-portal",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node ../../scripts/build-static.mjs"
+  }
+}
