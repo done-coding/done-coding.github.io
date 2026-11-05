@@ -3,6 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node ../../scripts/build-static.mjs"
+    "build": "vitepress build"
+  },
+  "dependencies": {
+    "@done-coding/site-kit": "workspace:*",
+    "vitepress": "^1.6.4"
   }
 }
