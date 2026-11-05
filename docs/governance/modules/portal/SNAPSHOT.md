@@ -6,7 +6,7 @@
 
 ## 业务快照
 
-一句话介绍 done-coding，入口指向 forge 和 cli，文案只取 npm 已发布包的描述。隐私说明按统计开关输出：未启用时写明未启用，启用时写明 Umami 记录的内容和 IP 处理方式。门户到产品站的点击记为 `portal-to-forge`、`portal-to-cli` 事件。
+一句话介绍 done-coding，入口指向 forge 和 cli，文案只取 npm 已发布包的描述。隐私说明按统计开关输出：未启用时写明未启用，启用时写明 Umami 记录的内容、IP 处理方式和产品演示页不加载统计。门户到产品站的点击记为 `portal-to-forge`、`portal-to-cli` 事件。
 
 ## UX 快照
 
