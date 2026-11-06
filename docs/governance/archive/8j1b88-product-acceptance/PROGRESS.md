@@ -9,13 +9,15 @@ after: ""
 
 # 已发布产物黑盒验收
 
+共享骨架独占方：本批改动根 `package.json`（acceptance 脚本、lint 范围）、`.ls-lint.yml` 与 `AGENTS.md`（目录表与命令），未改锁文件；nfp6e3 在同一窗口串行接手。
+
 ## 任务
 
 | 项 | 状态 | 交付 sha |
 |---|---|---|
-| [黑盒验收矩阵与问题草稿](a8yenh-acceptance-matrix.md) | 待开始 | |
-| 刷新所涉模块快照和上层摘要，product-acceptance 改 active | 待开始 | |
-| 归档本批并跑治理闸 | 待开始 | |
+| 黑盒验收矩阵与问题草稿（a8yenh） | 已完成 | 8d4adf7 |
+| 刷新所涉模块快照和上层摘要，product-acceptance 改 active | 已更新 | 09f09af |
+| 归档本批并跑治理闸 | 已完成 | 本归档提交 |
 | 本批交付归档后立刻、必须、立即开始下一批 `nfp6e3` | | |
 
 ## 进度
@@ -43,3 +45,9 @@ after: ""
 - 17:23–18:26 两轮：结果除 template-node-server（workspace）外完全一致，差异即上面的 pnpm 环境注入问题。
 - 草稿已由 Claude 逐份复核定稿：11 份（模板合并 4 份、模板单用例 2 份、forge 1 份、cli 4 份），只写现象、复现、期望、实际与环境。定稿时用 `git ls-remote` 复核了三个 gitee 仓库无法匿名访问；uni-mobile 的超时写明来自 vitest 监听模式不退出，不当作单纯“慢”。
 - DeepSeek 用量：只用于单测初稿，一次调用；cc-router 静默模式不回显金额，未取得精确花费。
+- 验收复核（Claude 独立重跑）：
+  - 18:33–19:06 用最终代码经 `pnpm acceptance` 全量运行，写入本仓结果：11 过 22 败，无新草稿、无过期草稿；与 17:23 那轮（node 启动）比对 results.json，去掉耗时后只差 template-node-server（workspace）一条输出摘要，正是本轮新加的折行临时路径脱敏，可重复性达成。
+  - `pnpm acceptance:test` 26 项通过；`pnpm verify` 通过（含 nfp6e3 在途改动的工作树，站点测试 134 项）；`pnpm lint` 通过。
+  - 验收产物中无本机家目录路径、系统临时目录与账号信息（grep 核对）。
+- 快照刷新：`product-acceptance` 由 not_implemented / 规划占位改为 active，新增模块快照；上层 SNAPSHOT 增加一行。旧事实“规划占位，不表示能力已实现”只存在于 MODULE.md 历史版本（见 git 历史），快照正文只留当前事实。
+- 未验证项：问题草稿未转交产品仓（按 B3 只写本仓）；forge 的 7 条声明诊断未在产品仓源码层面核对（禁读实现代码）；pnpm 12 以外的包管理器版本未覆盖；Linux/Windows 未跑。
