@@ -2,7 +2,7 @@
 
 ## 技术快照
 
-VitePress 站点，`.vitepress/` 只有配置和主题入口，逻辑在 `packages/site-kit`。读 `content/` 下全部版本目录，`current.json` 指向的为当前版本，生成不进仓的 `.generated/` 作为源目录。当前无内容产物，正式站显示「文档建设中」。尚未安装 `@done-coding/forge`，正文用到组件时再装。
+VitePress 站点，`.vitepress/` 只有配置和主题入口，逻辑在 `packages/site-kit`。读 `content/` 下全部版本目录，`current.json` 指向的为当前版本，生成不进仓的 `.generated/` 作为源目录。内容按纯 Markdown 渲染（关闭原始 HTML，`{{ }}` 转义），正文中的尖括号与标签按文本显示。当前无内容产物，正式站显示「文档建设中」。尚未安装 `@done-coding/forge`，正文用到组件时再装。
 
 ## 业务快照
 
