@@ -45,7 +45,7 @@ done-coding 的公开站点。每个 app 构建到一个 URL 路径，由 `pnpm 
 
 ## 站点检查
 
-`pnpm verify` 的站点检查除链接和 source map 外，还要求每个可收录页面有 title、description、指向自身的 canonical 和 Open Graph，并列入站根 `sitemap.xml`；图片要有 alt、标题不跳级、`<html>` 有 lang；单个页面与脚本样式不超过 `site.config.json` 的 `budgets`。演示是产品仓的独立应用，只查链接与 source map。门户的兼容性矩阵页在构建时读取 `docs/governance/audits/acceptance/` 下最近一次 `results.json`。
+`pnpm verify` 的站点检查除链接和 source map 外，还要求每个可收录页面有 title、description、指向自身的 canonical 和 Open Graph，并列入站根 `sitemap.xml`；图片要有 alt、标题不跳级、`<html>` 有 lang；单个页面与脚本样式不超过 `site.config.json` 的 `budgets`，按需加载的本地搜索索引单列 `searchIndexKB`，不占脚本样式预算。演示是产品仓的独立应用，只查链接与 source map。门户的兼容性矩阵页在构建时读取 `docs/governance/audits/acceptance/` 下最近一次 `results.json`。
 
 ## 统计
 

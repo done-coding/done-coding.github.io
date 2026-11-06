@@ -120,13 +120,32 @@ const checkA11y = (path, markup) => {
   }
 };
 
+// VitePress 本地搜索索引只在打开搜索时按需加载，单列预算，不占普通脚本的 assetKB
+const isSearchIndex = (path) =>
+  /(?:^|\/)@localSearchIndex[^/]*\.js$/.test(path);
+const searchIndexes = [];
+if (!(budgets.searchIndexKB > 0)) {
+  problems.push("site.config.json 的 budgets.searchIndexKB 必须是正数");
+}
+
 const checkBudget = (path, file) => {
+  const sizeKB = statSync(file).size / 1024;
+  if (isSearchIndex(path)) {
+    searchIndexes.push(
+      `${path} ${Math.ceil(sizeKB)} KB，预算 ${budgets.searchIndexKB} KB`,
+    );
+    if (sizeKB > budgets.searchIndexKB) {
+      problems.push(
+        `${path} 体积 ${Math.ceil(sizeKB)} KB，超过搜索索引预算 ${budgets.searchIndexKB} KB`,
+      );
+    }
+    return;
+  }
   const limitKB = path.endsWith(".html")
     ? budgets.pageKB
     : /\.(?:js|mjs|cjs|css)$/.test(path)
       ? budgets.assetKB
       : null;
-  const sizeKB = statSync(file).size / 1024;
   if (limitKB !== null && sizeKB > limitKB) {
     problems.push(
       `${path} 体积 ${Math.ceil(sizeKB)} KB，超过预算 ${limitKB} KB`,
@@ -201,6 +220,9 @@ for (const file of allFiles(root)) {
   }
 }
 
+if (searchIndexes.length > 0) {
+  console.log(`搜索索引体积：\n${searchIndexes.join("\n")}`);
+}
 if (problems.length > 0) {
   console.error(problems.join("\n"));
   process.exit(1);

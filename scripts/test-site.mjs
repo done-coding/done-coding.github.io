@@ -272,10 +272,34 @@ const testSeoAndA11y = () => {
     ),
     "缺少 lang",
   );
+  // 1100 KB 超过 assetKB、未超 searchIndexKB：普通脚本不得借用搜索索引预算
   expectCheckFails(
     "脚本超出体积预算",
     (dir) => writeFileSync(join(dir, "huge.js"), "x".repeat(1100 * 1024)),
     "huge.js 体积",
+  );
+  const writeSearchIndex = (dir, kb) => {
+    mkdirSync(join(dir, "forge/assets/chunks"), { recursive: true });
+    writeFileSync(
+      join(dir, "forge/assets/chunks/@localSearchIndexroot.test.js"),
+      "x".repeat(kb * 1024),
+    );
+  };
+  const search = copySite("搜索索引在单列预算内");
+  writeSearchIndex(search, 1100);
+  const searchResult = check(search);
+  expect(
+    "check-site 按单列预算放行搜索索引并显示大小",
+    searchResult.status === 0 &&
+      /@localSearchIndexroot\.test\.js 1100 KB，预算 \d+ KB/.test(
+        searchResult.output,
+      ),
+    searchResult.output,
+  );
+  expectCheckFails(
+    "搜索索引超出单列预算",
+    (dir) => writeSearchIndex(dir, 1600),
+    "@localSearchIndexroot.test.js 体积 1600 KB，超过搜索索引预算",
   );
   expectCheckFails(
     "页面超出体积预算",
