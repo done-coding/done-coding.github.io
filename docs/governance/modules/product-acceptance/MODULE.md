@@ -3,13 +3,13 @@ module: "product-acceptance"
 capability: "只用已发布产物对 done-coding 各产品做黑盒验收"
 kind: "kernel"
 host: null
-status: "not_implemented"
+status: "active"
 paths: ["acceptance/**", "docs/governance/audits/acceptance/**"]
 ---
 
 # product-acceptance
 
-> 文档定位：规范 · 规划占位；不表示能力已实现。
+> 文档定位：规范 · 领域定义；现状见 [模块快照](SNAPSHOT.md)。
 
 职责：站在真实用户的位置，只用 npm 上已发布的包和公开模板，验证 done-coding 各产品能装、能建、能用；结果可复跑，问题写成草稿交给产品仓。
 
