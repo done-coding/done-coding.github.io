@@ -13,10 +13,12 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
     "postinstall": "prettier --write ./pnpm-lock.yaml",
-    "lint:eslint": "eslint --no-error-on-unmatched-pattern apps scripts packages --ext .js,.mjs,.cjs,.ts,.tsx,.jsx,.vue",
-    "lint:format": "prettier --check apps scripts packages",
+    "lint:eslint": "eslint --no-error-on-unmatched-pattern apps scripts packages acceptance --ext .js,.mjs,.cjs,.ts,.tsx,.jsx,.vue",
+    "lint:format": "prettier --check apps scripts packages acceptance",
     "lint:names": "ls-lint",
-    "lint": "pnpm lint:eslint && pnpm lint:format && pnpm lint:names"
+    "lint": "pnpm lint:eslint && pnpm lint:format && pnpm lint:names",
+    "acceptance": "node acceptance/run.mjs",
+    "acceptance:test": "node --test \"acceptance/test/*.test.mjs\""
   },
   "workspaces": [
     "apps/*",
@@ -41,14 +43,14 @@
     "vue-eslint-parser": "^9.4.2"
   },
   "lint-staged": {
-    "{apps,scripts,packages}/**/*": [
+    "{apps,scripts,packages,acceptance}/**/*": [
       "ls-lint"
     ],
-    "{apps,scripts,packages}/**/*.{ts,js,mjs,cjs,vue,jsx,tsx}": [
+    "{apps,scripts,packages,acceptance}/**/*.{ts,js,mjs,cjs,vue,jsx,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "{apps,scripts,packages}/**/*.{json,html,css,scss,less,md,yml,yaml}": [
+    "{apps,scripts,packages,acceptance}/**/*.{json,html,css,scss,less,md,yml,yaml}": [
       "prettier --write"
     ]
   }

@@ -1,5 +1,5 @@
 ls:
-  "{apps,scripts,packages}/**":
+  "{apps,scripts,packages,acceptance}/**":
     .dir: kebab-case | lowercase
     .mjs: kebab-case | lowercase
     .cjs: kebab-case | lowercase

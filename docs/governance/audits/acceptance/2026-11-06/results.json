@@ -1,0 +1,2281 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "environment": {
+    "os": "Darwin 22.6.0",
+    "arch": "x64",
+    "memoryGB": 8,
+    "node": "v24.22.2",
+    "pnpm": "12.15.0",
+    "npm": "11.19.1",
+    "git": "2.39.2 (Apple Git-143)",
+    "python": "3.9.6"
+  },
+  "packages": {
+    "create-done-coding": "0.18.1",
+    "done-coding": "0.23.4",
+    "@done-coding/forge": "0.100.1"
+  },
+  "forgeToolchain": {
+    "@done-coding/forge": "0.100.1",
+    "vue": "3.5.45",
+    "vite": "8.3.6",
+    "@vitejs/plugin-vue": "6.0.10",
+    "vue-tsc": "3.3.14",
+    "typescript": "5.9.3"
+  },
+  "groupTitles": {
+    "template": "项目模板",
+    "forge": "forge 消费者",
+    "cli": "cli 子命令"
+  },
+  "filter": {
+    "groups": [
+      "template",
+      "forge",
+      "cli"
+    ],
+    "only": null
+  },
+  "notes": [
+    "forge 消费者的 TypeScript 取 5.x 最新版 5.9.3，因为 vue-tsc 依赖 TypeScript 的 JS API。"
+  ],
+  "totals": {
+    "pass": 11,
+    "fail": 22,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "id": "template-discovery",
+      "group": "template",
+      "title": "列出全部模板",
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n probe",
+        "# 在交互界面中查看「请选择模板」与各模板的「请选择模板分支」"
+      ],
+      "steps": [
+        {
+          "name": "列出模板",
+          "command": "create-done-coding -n probe（交互，列出「请选择模板$」的选项）",
+          "status": "pass",
+          "exitCode": null,
+          "durationMs": 6294,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "列出 template-npm-common 的分支",
+          "command": "create-done-coding -n probe（交互，列出「请选择模板分支」的选项）",
+          "status": "pass",
+          "exitCode": null,
+          "durationMs": 3731,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "列出 template-npm-node-common 的分支",
+          "command": "create-done-coding -n probe（交互，列出「请选择模板分支」的选项）",
+          "status": "pass",
+          "exitCode": null,
+          "durationMs": 4061,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "列出 template-npm-node-cli 的分支",
+          "command": "create-done-coding -n probe（交互，列出「请选择模板分支」的选项）",
+          "status": "pass",
+          "exitCode": null,
+          "durationMs": 3841,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "列出 template-node-server 的分支",
+          "command": "create-done-coding -n probe（交互，列出「请选择模板分支」的选项）",
+          "status": "pass",
+          "exitCode": null,
+          "durationMs": 4378,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "列出 template-components-vue3 的分支",
+          "command": "create-done-coding -n probe（交互，列出「请选择模板分支」的选项）",
+          "status": "pass",
+          "exitCode": null,
+          "durationMs": 4643,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "列出 template-monorepo 的分支",
+          "command": "create-done-coding -n probe（交互，列出「请选择模板分支」的选项）",
+          "status": "pass",
+          "exitCode": null,
+          "durationMs": 4810,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "列出 template-web-admin-vue3 的分支",
+          "command": "create-done-coding -n probe（交互，列出「请选择模板分支」的选项）",
+          "status": "pass",
+          "exitCode": null,
+          "durationMs": 5021,
+          "reason": null,
+          "summary": []
+        }
+      ],
+      "notes": [
+        "发现 18 个模板变体；「自定义模版路径(默认分支)」「某个git平台用户仓库(默认分支)」是自填地址的入口，不是模板，未纳入矩阵。",
+        "非交互模式没有列出模板的参数，只能在交互界面中查看；本运行器用伪终端读取。"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "template-acc-template-npm-common-standalone",
+      "group": "template",
+      "title": "template-npm-common（template/standalone）",
+      "meta": {
+        "template": "template-npm-common",
+        "branch": "template/standalone",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-npm-common-standalone",
+        "# 交互中选择模板「template-npm-common(2个细分分支)」、分支「template/standalone」，其余问题回车取默认值",
+        "cd acc-template-npm-common-standalone",
+        "pnpm install",
+        "pnpm run build",
+        "pnpm run test"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-npm-common-standalone（交互选择 template-npm-common（template/standalone））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 10799,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 38390,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.21.5、nodejieba@2.5.2",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: esbuild@0.21.5, nodejieba@2.5.2",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 26469,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1844,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 5579,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "pnpm run test",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 1881,
+          "reason": "测试脚本找不到任何测试文件，以退出码 1 结束",
+          "summary": [
+            "[ELIFECYCLE] Test failed. See above for more details.",
+            "exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*",
+            "watch exclude:  **/node_modules/**, **/dist/**",
+            "No test files found, exiting with code 1"
+          ],
+          "issueKey": "templates-test-without-test-files",
+          "expected": "新建项目的 `test` 脚本可以直接通过：模板自带测试，或在没有测试文件时不判失败。"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-npm-common-workspace",
+      "group": "template",
+      "title": "template-npm-common（template/workspace）",
+      "meta": {
+        "template": "template-npm-common",
+        "branch": "template/workspace",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-npm-common-workspace",
+        "# 交互中选择模板「template-npm-common(2个细分分支)」、分支「template/workspace」，其余问题回车取默认值",
+        "cd acc-template-npm-common-workspace",
+        "pnpm install",
+        "pnpm run build",
+        "pnpm run test"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-npm-common-workspace（交互选择 template-npm-common（template/workspace））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 11422,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 10681,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.21.5、nodejieba@2.5.2",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: esbuild@0.21.5, nodejieba@2.5.2",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 25952,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 91,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 5542,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "pnpm run test",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 1974,
+          "reason": "测试脚本找不到任何测试文件，以退出码 1 结束",
+          "summary": [
+            "[ELIFECYCLE] Test failed. See above for more details.",
+            "exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*",
+            "watch exclude:  **/node_modules/**, **/dist/**",
+            "No test files found, exiting with code 1"
+          ],
+          "issueKey": "templates-test-without-test-files",
+          "expected": "新建项目的 `test` 脚本可以直接通过：模板自带测试，或在没有测试文件时不判失败。"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-npm-node-common-standalone",
+      "group": "template",
+      "title": "template-npm-node-common（template/standalone）",
+      "meta": {
+        "template": "template-npm-node-common",
+        "branch": "template/standalone",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-npm-node-common-standalone",
+        "# 交互中选择模板「template-npm-node-common(2个细分分支)」、分支「template/standalone」，其余问题回车取默认值",
+        "cd acc-template-npm-node-common-standalone",
+        "pnpm install",
+        "pnpm run build",
+        "pnpm run test"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-npm-node-common-standalone（交互选择 template-npm-node-common（template/standalone））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 10835,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 39793,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.21.5、nodejieba@2.5.2",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: esbuild@0.21.5, nodejieba@2.5.2",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 19638,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1616,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 5588,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "pnpm run test",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 1943,
+          "reason": "测试脚本找不到任何测试文件，以退出码 1 结束",
+          "summary": [
+            "[ELIFECYCLE] Test failed. See above for more details.",
+            "exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*",
+            "watch exclude:  **/node_modules/**, **/dist/**",
+            "No test files found, exiting with code 1"
+          ],
+          "issueKey": "templates-test-without-test-files",
+          "expected": "新建项目的 `test` 脚本可以直接通过：模板自带测试，或在没有测试文件时不判失败。"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-npm-node-common-workspace",
+      "group": "template",
+      "title": "template-npm-node-common（template/workspace）",
+      "meta": {
+        "template": "template-npm-node-common",
+        "branch": "template/workspace",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-npm-node-common-workspace",
+        "# 交互中选择模板「template-npm-node-common(2个细分分支)」、分支「template/workspace」，其余问题回车取默认值",
+        "cd acc-template-npm-node-common-workspace",
+        "pnpm install",
+        "pnpm run build",
+        "pnpm run test"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-npm-node-common-workspace（交互选择 template-npm-node-common（template/workspace））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 10936,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 17319,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.21.5、nodejieba@2.5.2",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: esbuild@0.21.5, nodejieba@2.5.2",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 19200,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 89,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 5828,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "pnpm run test",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 1888,
+          "reason": "测试脚本找不到任何测试文件，以退出码 1 结束",
+          "summary": [
+            "[ELIFECYCLE] Test failed. See above for more details.",
+            "exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*",
+            "watch exclude:  **/node_modules/**, **/dist/**",
+            "No test files found, exiting with code 1"
+          ],
+          "issueKey": "templates-test-without-test-files",
+          "expected": "新建项目的 `test` 脚本可以直接通过：模板自带测试，或在没有测试文件时不判失败。"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-npm-node-cli-standalone",
+      "group": "template",
+      "title": "template-npm-node-cli（template/standalone）",
+      "meta": {
+        "template": "template-npm-node-cli",
+        "branch": "template/standalone",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-npm-node-cli-standalone",
+        "# 交互中选择模板「template-npm-node-cli(2个细分分支)」、分支「template/standalone」，其余问题回车取默认值",
+        "cd acc-template-npm-node-cli-standalone",
+        "pnpm install",
+        "pnpm run build",
+        "pnpm run test"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-npm-node-cli-standalone（交互选择 template-npm-node-cli（template/standalone））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 12224,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 49606,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.21.5、nodejieba@2.5.2",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: esbuild@0.21.5, nodejieba@2.5.2",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 47614,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1622,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 6433,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "pnpm run test",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 1912,
+          "reason": "测试脚本找不到任何测试文件，以退出码 1 结束",
+          "summary": [
+            "[ELIFECYCLE] Test failed. See above for more details.",
+            "exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*",
+            "watch exclude:  **/node_modules/**, **/dist/**",
+            "No test files found, exiting with code 1"
+          ],
+          "issueKey": "templates-test-without-test-files",
+          "expected": "新建项目的 `test` 脚本可以直接通过：模板自带测试，或在没有测试文件时不判失败。"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-npm-node-cli-workspace",
+      "group": "template",
+      "title": "template-npm-node-cli（template/workspace）",
+      "meta": {
+        "template": "template-npm-node-cli",
+        "branch": "template/workspace",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-npm-node-cli-workspace",
+        "# 交互中选择模板「template-npm-node-cli(2个细分分支)」、分支「template/workspace」，其余问题回车取默认值",
+        "cd acc-template-npm-node-cli-workspace",
+        "pnpm install",
+        "pnpm run build",
+        "pnpm run test"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-npm-node-cli-workspace（交互选择 template-npm-node-cli（template/workspace））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 13002,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 16899,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.21.5、nodejieba@2.5.2",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: esbuild@0.21.5, nodejieba@2.5.2",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 70692,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 91,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 8003,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "pnpm run test",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 2135,
+          "reason": "测试脚本找不到任何测试文件，以退出码 1 结束",
+          "summary": [
+            "[ELIFECYCLE] Test failed. See above for more details.",
+            "exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*",
+            "watch exclude:  **/node_modules/**, **/dist/**",
+            "No test files found, exiting with code 1"
+          ],
+          "issueKey": "templates-test-without-test-files",
+          "expected": "新建项目的 `test` 脚本可以直接通过：模板自带测试，或在没有测试文件时不判失败。"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-node-server-standalone",
+      "group": "template",
+      "title": "template-node-server（template/standalone）",
+      "meta": {
+        "template": "template-node-server",
+        "branch": "template/standalone",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-node-server-standalone",
+        "# 交互中选择模板「template-node-server(2个细分分支)」、分支「template/standalone」，其余问题回车取默认值",
+        "cd acc-template-node-server-standalone",
+        "pnpm install",
+        "pnpm run build",
+        "pnpm run test"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-node-server-standalone（交互选择 template-node-server（template/standalone））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 12718,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 40966,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.21.5、esbuild@0.27.2、nodejieba@2.5.2",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: esbuild@0.21.5, esbuild@0.27.2, nodejieba@2.5.2",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 77024,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1662,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 7294,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "pnpm run test",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 1895,
+          "reason": "测试脚本找不到任何测试文件，以退出码 1 结束",
+          "summary": [
+            "[ELIFECYCLE] Test failed. See above for more details.",
+            "exclude:  **/node_modules/**, **/dist/**, **/cypress/**, **/.{idea,git,cache,output,temp}/**, **/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*",
+            "watch exclude:  **/node_modules/**, **/dist/**",
+            "No test files found, exiting with code 1"
+          ],
+          "issueKey": "templates-test-without-test-files",
+          "expected": "新建项目的 `test` 脚本可以直接通过：模板自带测试，或在没有测试文件时不判失败。"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-node-server-workspace",
+      "group": "template",
+      "title": "template-node-server（template/workspace）",
+      "meta": {
+        "template": "template-node-server",
+        "branch": "template/workspace",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-node-server-workspace",
+        "# 交互中选择模板「template-node-server(2个细分分支)」、分支「template/workspace」，其余问题回车取默认值",
+        "cd acc-template-node-server-workspace",
+        "pnpm install"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-node-server-workspace（交互选择 template-node-server（template/workspace））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 12833,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 18667,
+          "reason": "退出码 1",
+          "summary": [
+            ". postinstall: sh: prettier: command not found",
+            ". postinstall: Failed",
+            "Error: ERR_PNPM_EXECUTOR_LIFECYCLE_SCRIPT_FAILED",
+            "  × installing dependencies",
+            "  ╰─▶ <tmp>/work/acc-template-node-server-",
+            "      workspace postinstall: `prettier --write ./pnpm-lock.yaml` exited with",
+            "      exit status: 127"
+          ]
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "blocked",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "依赖安装失败，未执行",
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "pnpm run test",
+          "status": "blocked",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "依赖安装失败，未执行",
+          "summary": []
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-components-vue3-standalone",
+      "group": "template",
+      "title": "template-components-vue3（template/standalone）",
+      "meta": {
+        "template": "template-components-vue3",
+        "branch": "template/standalone",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-components-vue3-standalone",
+        "# 交互中选择模板「template-components-vue3(2个细分分支)」、分支「template/standalone」，其余问题回车取默认值",
+        "cd acc-template-components-vue3-standalone",
+        "pnpm install",
+        "pnpm run build",
+        "pnpm run lint"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-components-vue3-standalone（交互选择 template-components-vue3（template/standalone））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 11786,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 55447,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.21.5、nodejieba@2.5.2、vue-demi@0.14.10",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: esbuild@0.21.5, nodejieba@2.5.2, vue-demi@0.14.10",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 32028,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 248,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 10801,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "pnpm run lint",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 4031,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 test 脚本",
+          "summary": []
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-components-vue3-workspace",
+      "group": "template",
+      "title": "template-components-vue3（template/workspace）",
+      "meta": {
+        "template": "template-components-vue3",
+        "branch": "template/workspace",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-components-vue3-workspace",
+        "# 交互中选择模板「template-components-vue3(2个细分分支)」、分支「template/workspace」，其余问题回车取默认值",
+        "cd acc-template-components-vue3-workspace",
+        "pnpm install",
+        "pnpm run build"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-components-vue3-workspace（交互选择 template-components-vue3（template/workspace））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 11903,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 50513,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.21.5、nodejieba@2.5.2",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: esbuild@0.21.5, nodejieba@2.5.2",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 35102,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 101,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 10488,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 test 脚本",
+          "summary": []
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-monorepo-common",
+      "group": "template",
+      "title": "template-monorepo（template/common）",
+      "meta": {
+        "template": "template-monorepo",
+        "branch": "template/common",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-monorepo-common",
+        "# 交互中选择模板「template-monorepo(2个细分分支)」、分支「template/common」，其余问题回车取默认值",
+        "cd acc-template-monorepo-common",
+        "pnpm install"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-monorepo-common（交互选择 template-monorepo（template/common））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 8915,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 31082,
+          "reason": "pnpm 拦截了依赖的构建脚本：@parcel/watcher@2.0.4、nx@16.10.0",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: @parcel/watcher@2.0.4, nx@16.10.0",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 2592,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1983,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 build 脚本",
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 test 脚本",
+          "summary": []
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-monorepo-components",
+      "group": "template",
+      "title": "template-monorepo（template/components）",
+      "meta": {
+        "template": "template-monorepo",
+        "branch": "template/components",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-monorepo-components",
+        "# 交互中选择模板「template-monorepo(2个细分分支)」、分支「template/components」，其余问题回车取默认值",
+        "cd acc-template-monorepo-components",
+        "pnpm install"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-monorepo-components（交互选择 template-monorepo（template/components））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 8681,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 56812,
+          "reason": "pnpm 拦截了依赖的构建脚本：@parcel/watcher@2.0.4、nx@16.10.0",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  × installing dependencies",
+            "  ╰─▶ Ignored build scripts: @parcel/watcher@2.0.4, nx@16.10.0",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 2625,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 2044,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 build 脚本",
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 test 脚本",
+          "summary": []
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-web-admin-vue3-master",
+      "group": "template",
+      "title": "template-web-admin-vue3（master）",
+      "meta": {
+        "template": "template-web-admin-vue3",
+        "branch": "master",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-web-admin-vue3-master",
+        "# 交互中选择模板「template-web-admin-vue3(2个细分分支)」、分支「master」，其余问题回车取默认值",
+        "cd acc-template-web-admin-vue3-master",
+        "pnpm install",
+        "pnpm run build",
+        "pnpm run lint"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-web-admin-vue3-master（交互选择 template-web-admin-vue3（master））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 11673,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 29936,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.20.2、esbuild@0.23.1、vue-demi@0.14.10、vue-demi@0.14.7",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  ╰─▶ Ignored build scripts: esbuild@0.20.2, esbuild@0.23.1, vue-demi@0.14.10,",
+            "      vue-demi@0.14.7",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1677,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 235,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "fail",
+          "exitCode": 2,
+          "durationMs": 15564,
+          "reason": "全新项目首次构建时类型检查找不到 ref、computed 等自动导入的名字",
+          "summary": [
+            "src/components/app-layout/AppBody.vue(54,21): error TS2304: Cannot find name 'ref'.",
+            "src/components/app-layout/AppBody.vue(58,39): error TS2304: Cannot find name 'ref'.",
+            "src/components/app-layout/AppBody.vue(60,1): error TS2304: Cannot find name 'provide'.",
+            "src/components/app-layout/AppBody.vue(62,25): error TS2304: Cannot find name 'computed'.",
+            "src/components/app-layout/AppBody.vue(66,23): error TS2304: Cannot find name 'computed'.",
+            "src/components/app-layout/AppBody.vue(70,16): error TS2304: Cannot find name 'computed'.",
+            "src/components/app-layout/AppBody.vue(74,27): error TS2304: Cannot find name 'computed'.",
+            "src/components/app-layout/AppBody.vue(109,1): error TS2304: Cannot find name 'watch'.",
+            "src/store/user.ts(154,3): error TS2304: Cannot find name 'watch'.",
+            "src/store/user.ts(154,17): error TS7006: Parameter 'n' implicitly has an 'any' type.",
+            "src/store/user.ts(154,20): error TS7006: Parameter 'o' implicitly has an 'any' type.",
+            "[ELIFECYCLE] Command failed with exit code 2."
+          ],
+          "issueKey": "templates-build-missing-auto-import-types",
+          "expected": "按创建完成时提示的步骤，全新项目可以直接 `pnpm run build` 成功。"
+        },
+        {
+          "name": "lint",
+          "command": "pnpm run lint",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 5814,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 test 脚本",
+          "summary": []
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-web-admin-vue3-subpackage",
+      "group": "template",
+      "title": "template-web-admin-vue3（subpackage）",
+      "meta": {
+        "template": "template-web-admin-vue3",
+        "branch": "subpackage",
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-web-admin-vue3-subpackage",
+        "# 交互中选择模板「template-web-admin-vue3(2个细分分支)」、分支「subpackage」，其余问题回车取默认值",
+        "cd acc-template-web-admin-vue3-subpackage",
+        "pnpm install",
+        "pnpm run build"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-web-admin-vue3-subpackage（交互选择 template-web-admin-vue3（subpackage））",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 15471,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 12382,
+          "reason": "pnpm 拦截了依赖的构建脚本：esbuild@0.21.5、esbuild@0.23.1、esbuild@0.28.2、vue-demi@0.14.10",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  ╰─▶ Ignored build scripts: esbuild@0.21.5, esbuild@0.23.1, esbuild@0.28.2,",
+            "      vue-demi@0.14.10",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 2173,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 91,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "pnpm run build",
+          "status": "fail",
+          "exitCode": 2,
+          "durationMs": 6607,
+          "reason": "全新项目首次构建时类型检查找不到 ref、computed 等自动导入的名字",
+          "summary": [
+            "src/components/app-layout/AppBody.vue(54,21): error TS2304: Cannot find name 'ref'.",
+            "src/components/app-layout/AppBody.vue(58,39): error TS2304: Cannot find name 'ref'.",
+            "src/components/app-layout/AppBody.vue(60,1): error TS2304: Cannot find name 'provide'.",
+            "src/components/app-layout/AppBody.vue(62,25): error TS2304: Cannot find name 'computed'.",
+            "src/components/app-layout/AppBody.vue(66,23): error TS2304: Cannot find name 'computed'.",
+            "src/components/app-layout/AppBody.vue(70,16): error TS2304: Cannot find name 'computed'.",
+            "src/components/app-layout/AppBody.vue(74,27): error TS2304: Cannot find name 'computed'.",
+            "src/components/app-layout/AppBody.vue(109,1): error TS2304: Cannot find name 'watch'.",
+            "src/store/user.ts(154,3): error TS2304: Cannot find name 'watch'.",
+            "src/store/user.ts(154,17): error TS7006: Parameter 'n' implicitly has an 'any' type.",
+            "src/store/user.ts(154,20): error TS7006: Parameter 'o' implicitly has an 'any' type.",
+            "[ELIFECYCLE] Command failed with exit code 2."
+          ],
+          "issueKey": "templates-build-missing-auto-import-types",
+          "expected": "按创建完成时提示的步骤，全新项目可以直接 `pnpm run build` 成功。"
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 test 脚本",
+          "summary": []
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-web-mobile-vue3",
+      "group": "template",
+      "title": "template-web-mobile-vue3",
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-web-mobile-vue3",
+        "# 交互中选择模板「template-web-mobile-vue3(默认分支)」，其余问题回车取默认值",
+        "cd acc-template-web-mobile-vue3"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-web-mobile-vue3（交互选择 template-web-mobile-vue3）",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 3757,
+          "reason": "克隆模板仓库需要登录，无法匿名获取",
+          "summary": [
+            "Command failed: git clone 'https://gitee.com/justsosu/template-web-m-vue3.git' '<tmp>/tmp/done-coding-create-template-source/<uuid>' --depth=1",
+            "Error: Command failed: git clone 'https://gitee.com/justsosu/template-web-m-vue3.git' '<tmp>/tmp/done-coding-create-template-source/<uuid>' --depth=1",
+            "    at genericNodeError (node:internal/errors:986:15)",
+            "    at wrappedFn (node:internal/errors:540:14)",
+            "    at checkExecSyncError (node:child_process:943:11)",
+            "    at ui (file://<tools>/node_modules/create-done-coding/es/index-909011eb.js:299:5)",
+            "    at xn (file://<tools>/node_modules/create-done-coding/es/index-909011eb.js:366:62)",
+            "    at fh (file://<tools>/node_modules/create-done-coding/es/index-909011eb.js:4835:30)",
+            "    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+          ],
+          "issueKey": "templates-clone-requires-login",
+          "expected": "公开模板列表中的模板都能匿名克隆并创建项目。"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-uni-mobile-vue3",
+      "group": "template",
+      "title": "template-uni-mobile-vue3",
+      "meta": {
+        "template": "template-uni-mobile-vue3",
+        "branch": null,
+        "packageManager": "pnpm"
+      },
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-uni-mobile-vue3",
+        "# 交互中选择模板「template-uni-mobile-vue3(默认分支)」，其余问题回车取默认值",
+        "cd acc-template-uni-mobile-vue3",
+        "pnpm install",
+        "pnpm run test"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-uni-mobile-vue3（交互选择 template-uni-mobile-vue3）",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 6657,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 57748,
+          "reason": "pnpm 拦截了依赖的构建脚本：@parcel/watcher@2.6.0、core-js@3.51.0、esbuild@0.16.17、esbuild@0.17.19、vue-demi@0.14.10",
+          "summary": [
+            "Error: ERR_PNPM_IGNORED_BUILDS",
+            "  ╰─▶ Ignored build scripts: @parcel/watcher@2.6.0, core-js@3.51.0,",
+            "      esbuild@0.16.17, esbuild@0.17.19, vue-demi@0.14.10",
+            "  help: Run \"pnpm approve-builds\" to pick which dependencies should be allowed",
+            "        to run scripts."
+          ],
+          "issueKey": "templates-pnpm-ignored-builds",
+          "expected": "按创建完成时提示的步骤执行 `pnpm install` 即可成功，不需要用户额外批准构建脚本。"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 3050,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 256,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "构建",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 build 脚本",
+          "summary": []
+        },
+        {
+          "name": "lint",
+          "command": "",
+          "status": "absent",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "package.json 没有 lint 脚本",
+          "summary": []
+        },
+        {
+          "name": "测试",
+          "command": "pnpm run test",
+          "status": "timeout",
+          "exitCode": null,
+          "durationMs": 600022,
+          "reason": "超过 600 秒未结束",
+          "summary": [
+            "stdout | src/api/__tests__/index.spec.ts > api base > 通用接口 - 网络成功, 业务失败",
+            "58 TypeError: Cannot read properties of undefined (reading 'split')",
+            " ❯ src/api/__tests__/index.spec.ts  (5 tests | 4 failed | 1 skipped) <t>",
+            "     → Cannot read properties of undefined (reading 'split')",
+            "   ❯ src/api/__tests__/index.spec.ts > api base > 通用接口 - 网络成功, 业务失败",
+            "     → expected TypeError: Cannot read properties of unde… to deeply equal { code: 500, message: '业务失败', …(1) }",
+            "     → expected TypeError: Cannot read properties of unde… to deeply equal { code: 40005, message: '未登录', …(1) }",
+            "   ❯ src/api/__tests__/index.spec.ts > api base > 通用接口 - 网络失败",
+            "   Start at  <clock>",
+            "   Duration  <t> (transform <t>, setup <t>, collect <t>, tests <t>, environment <t>, prepare <t>)",
+            " FAIL  Tests failed. Watching for file changes...",
+            "       press h to show help, press q to quit"
+          ]
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-node-express",
+      "group": "template",
+      "title": "template-node-express",
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-node-express",
+        "# 交互中选择模板「template-node-express(默认分支)」，其余问题回车取默认值",
+        "cd acc-template-node-express"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-node-express（交互选择 template-node-express）",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 4687,
+          "reason": "克隆模板仓库需要登录，无法匿名获取",
+          "summary": [
+            "Command failed: git clone 'https://gitee.com/justsosu/template-node-express.git' '<tmp>/tmp/done-coding-create-template-source/<uuid>' --depth=1",
+            "Error: Command failed: git clone 'https://gitee.com/justsosu/template-node-express.git' '<tmp>/tmp/done-coding-create-template-source/<uuid>' --depth=1",
+            "    at genericNodeError (node:internal/errors:986:15)",
+            "    at wrappedFn (node:internal/errors:540:14)",
+            "    at checkExecSyncError (node:child_process:943:11)",
+            "    at ui (file://<tools>/node_modules/create-done-coding/es/index-909011eb.js:299:5)",
+            "    at xn (file://<tools>/node_modules/create-done-coding/es/index-909011eb.js:366:62)",
+            "    at fh (file://<tools>/node_modules/create-done-coding/es/index-909011eb.js:4835:30)",
+            "    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+          ],
+          "issueKey": "templates-clone-requires-login",
+          "expected": "公开模板列表中的模板都能匿名克隆并创建项目。"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "template-acc-template-web-site-vue3",
+      "group": "template",
+      "title": "template-web-site-vue3",
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 -n acc-template-web-site-vue3",
+        "# 交互中选择模板「template-web-site-vue3(默认分支)」，其余问题回车取默认值",
+        "cd acc-template-web-site-vue3"
+      ],
+      "steps": [
+        {
+          "name": "创建",
+          "command": "create-done-coding -n acc-template-web-site-vue3（交互选择 template-web-site-vue3）",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 4446,
+          "reason": "克隆模板仓库需要登录，无法匿名获取",
+          "summary": [
+            "Command failed: git clone 'https://gitee.com/justsosu/template-web-site-vue3.git' '<tmp>/tmp/done-coding-create-template-source/<uuid>' --depth=1",
+            "Error: Command failed: git clone 'https://gitee.com/justsosu/template-web-site-vue3.git' '<tmp>/tmp/done-coding-create-template-source/<uuid>' --depth=1",
+            "    at genericNodeError (node:internal/errors:986:15)",
+            "    at wrappedFn (node:internal/errors:540:14)",
+            "    at checkExecSyncError (node:child_process:943:11)",
+            "    at ui (file://<tools>/node_modules/create-done-coding/es/index-909011eb.js:299:5)",
+            "    at xn (file://<tools>/node_modules/create-done-coding/es/index-909011eb.js:366:62)",
+            "    at fh (file://<tools>/node_modules/create-done-coding/es/index-909011eb.js:4835:30)",
+            "    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+          ],
+          "issueKey": "templates-clone-requires-login",
+          "expected": "公开模板列表中的模板都能匿名克隆并创建项目。"
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "forge-consumer",
+      "group": "forge",
+      "title": "@done-coding/forge@0.100.1 消费者",
+      "versions": {
+        "@done-coding/forge": "0.100.1",
+        "vue": "3.5.45",
+        "vite": "8.3.6",
+        "@vitejs/plugin-vue": "6.0.10",
+        "vue-tsc": "3.3.14",
+        "typescript": "5.9.3"
+      },
+      "reproduce": [
+        "mkdir forge-consumer && cd forge-consumer",
+        "pnpm add @done-coding/forge@0.100.1 vue@3.5.45",
+        "pnpm add -D vite@8.3.6 @vitejs/plugin-vue@6.0.10 vue-tsc@3.3.14 typescript@5.9.3",
+        "# src/main.ts 按 forge README 引入 { AppLayout, FormMain, ModalPorter } 和 @done-coding/forge/style.css",
+        "pnpm exec vite build",
+        "pnpm exec vue-tsc --noEmit  # tsconfig strict，分别设 skipLibCheck true / false"
+      ],
+      "steps": [
+        {
+          "name": "安装依赖",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 1,
+          "durationMs": 11651,
+          "reason": null,
+          "summary": [],
+          "note": "pnpm 拦截构建脚本（vue-demi@0.14.10），按提示批准后继续"
+        },
+        {
+          "name": "批准构建脚本",
+          "command": "pnpm approve-builds --all",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 4855,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "批准后重新安装",
+          "command": "pnpm install",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 82,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "vite build",
+          "command": "pnpm exec vite build",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 5130,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "vue-tsc skipLibCheck=true",
+          "command": "pnpm exec vue-tsc --noEmit --pretty false -p tsconfig.skip.json",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 4793,
+          "reason": null,
+          "summary": [],
+          "diagnostics": {
+            "total": 0,
+            "forge": {},
+            "thirdParty": {}
+          },
+          "expected": "forge 公开入口与样式在严格模式下无类型诊断（第三方库诊断单列，不计入）。"
+        },
+        {
+          "name": "vue-tsc skipLibCheck=false",
+          "command": "pnpm exec vue-tsc --noEmit --pretty false -p tsconfig.json",
+          "status": "fail",
+          "exitCode": 2,
+          "durationMs": 12280,
+          "reason": "forge 或消费者源码有 7 条类型诊断",
+          "summary": [
+            "@done-coding/forge-compose/types/components/layout/app-sidebar/AppSidebar.vue.d.ts(27,148): error TS2344: Type 'GlobalComponents' does not satisfy the constraint 'Record<string, Component<any, any, any, ComputedOptions, MethodOptions, {}, any>>'.",
+            "@done-coding/forge-core/types/components/basic/action-btn/ActionBtn.vue.d.ts(12,12): error TS2300: Duplicate identifier 'evt'.",
+            "@done-coding/forge-core/types/components/basic/action-btn/ActionBtn.vue.d.ts(12,26): error TS2300: Duplicate identifier 'evt'.",
+            "@done-coding/forge-core/types/components/data/badge-mark/BadgeMark.vue.d.ts(88,32): error TS2344: Type 'GlobalComponents' does not satisfy the constraint 'Record<string, Component<any, any, any, ComputedOptions, MethodOptions, {}, any>>'.",
+            "@done-coding/forge-core/types/utils/export.d.ts(10,85): error TS2344: Type '\"label\"' does not satisfy the constraint '\"install\" | \"setPropsDefaults\"'.",
+            "@done-coding/forge-data/types/components/data-grid-view/types.d.ts(42,124): error TS2344: Type '\"type\" | \"label\" | \"render\" | \"prop\"' does not satisfy the constraint '\"fixed\" | \"type\" | \"render\" | \"align\" | \"install\" | \"prop\" | \"columnKey\" | \"headerAlign\" | \"filterPlacement\" | \"setPropsDefaults\" | \"headerRender\"'.",
+            "@done-coding/forge-data/types/components/shared/types.d.ts(35,45): error TS2344: Type '\"label\" | \"prop\"' does not satisfy the constraint '\"fixed\" | \"type\" | \"render\" | \"align\" | \"install\" | \"prop\" | \"columnKey\" | \"headerAlign\" | \"filterPlacement\" | \"setPropsDefaults\" | \"headerRender\"'."
+          ],
+          "diagnostics": {
+            "total": 63,
+            "forge": {
+              "@done-coding/forge-compose": 1,
+              "@done-coding/forge-core": 4,
+              "@done-coding/forge-data": 2
+            },
+            "thirdParty": {
+              "@vueuse/core": 16,
+              "element-plus": 40
+            }
+          },
+          "expected": "forge 公开入口与样式在严格模式下无类型诊断（第三方库诊断单列，不计入）。"
+        }
+      ],
+      "notes": [
+        "安装依赖：pnpm 拦截构建脚本（vue-demi@0.14.10），按提示批准后继续",
+        "vue-tsc skipLibCheck=true：共 0 条诊断，forge/消费者 0 条，第三方 0 条",
+        "vue-tsc skipLibCheck=false：共 63 条诊断，forge/消费者 7 条，第三方 56 条（@vueuse/core 16、element-plus 40）"
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "cli-create",
+      "group": "cli",
+      "title": "done-coding create",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 create --help",
+        "npx -y done-coding@0.23.4 create template-config",
+        "npx -y done-coding@0.23.4 create instances ls"
+      ],
+      "steps": [
+        {
+          "name": "create --help",
+          "command": "done-coding create --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1476,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "create template-config",
+          "command": "done-coding create template-config",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1559,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "create instances ls",
+          "command": "done-coding create instances ls",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1520,
+          "reason": null,
+          "summary": []
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "cli-inject",
+      "group": "cli",
+      "title": "done-coding inject",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 inject --help",
+        "npx -y done-coding@0.23.4 inject init",
+        "npx -y done-coding@0.23.4 inject"
+      ],
+      "steps": [
+        {
+          "name": "inject --help",
+          "command": "done-coding inject --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1494,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "inject init",
+          "command": "done-coding inject init",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1520,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "inject",
+          "command": "done-coding inject",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1539,
+          "reason": null,
+          "summary": []
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "cli-extract",
+      "group": "cli",
+      "title": "done-coding extract",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 extract --help",
+        "npx -y done-coding@0.23.4 extract init",
+        "npx -y done-coding@0.23.4 extract"
+      ],
+      "steps": [
+        {
+          "name": "extract --help",
+          "command": "done-coding extract --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1476,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "extract init",
+          "command": "done-coding extract init",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1534,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "extract",
+          "command": "done-coding extract",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1540,
+          "reason": null,
+          "summary": []
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "cli-publish",
+      "group": "cli",
+      "title": "done-coding publish",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 publish --help"
+      ],
+      "steps": [
+        {
+          "name": "publish --help",
+          "command": "done-coding publish --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1482,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "真实用法",
+          "command": "",
+          "status": "skipped",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "真实用法会向 npm 发布，需要账号且是对外动作",
+          "summary": []
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "cli-template",
+      "group": "cli",
+      "title": "done-coding template",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 template --help",
+        "npx -y done-coding@0.23.4 template init",
+        "npx -y done-coding@0.23.4 template"
+      ],
+      "steps": [
+        {
+          "name": "template --help",
+          "command": "done-coding template --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1521,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "template init",
+          "command": "done-coding template init（交互，回车取默认值）",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 3719,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "template",
+          "command": "done-coding template",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 1476,
+          "reason": "退出码 1",
+          "summary": [
+            "开始单个处理",
+            "env与envData不能同时为空"
+          ]
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "cli-component",
+      "group": "cli",
+      "title": "done-coding component",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 component --help",
+        "npx -y done-coding@0.23.4 component list"
+      ],
+      "steps": [
+        {
+          "name": "component --help",
+          "command": "done-coding component --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1504,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "component list",
+          "command": "done-coding component list",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 1473,
+          "reason": "退出码 1",
+          "summary": [
+            "Error: 未找到批次类型「component」：已逐级向上查找 .done-coding/component/ 至全局 ~/.done-coding/component/，均未命中（R2）",
+            "    at CommandInstance.handleValidationAndGetResult (file://<tools>/node_modules/yargs/build/lib/command.js:205:25)",
+            "    at CommandInstance.applyMiddlewareAndGetResult (file://<tools>/node_modules/yargs/build/lib/command.js:245:20)",
+            "    at CommandInstance.runCommand (file://<tools>/node_modules/yargs/build/lib/command.js:128:20)",
+            "    at [runYargsParserAndExecuteCommands] (file://<tools>/node_modules/yargs/build/lib/yargs-factory.js:1386:105)"
+          ]
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "id": "cli-generator",
+      "group": "cli",
+      "title": "done-coding generator",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 generator --help",
+        "npx -y done-coding@0.23.4 generator list",
+        "npx -y done-coding@0.23.4 generator init page"
+      ],
+      "steps": [
+        {
+          "name": "generator --help",
+          "command": "done-coding generator --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1492,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "generator list",
+          "command": "done-coding generator list",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1562,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "generator init page",
+          "command": "done-coding generator init page",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1537,
+          "reason": null,
+          "summary": []
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "cli-config",
+      "group": "cli",
+      "title": "done-coding config",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 config --help",
+        "npx -y done-coding@0.23.4 config check"
+      ],
+      "steps": [
+        {
+          "name": "config --help",
+          "command": "done-coding config --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1481,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "config check",
+          "command": "done-coding config check",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1546,
+          "reason": null,
+          "summary": []
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "cli-cc-switch",
+      "group": "cli",
+      "title": "done-coding cc-switch",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 cc-switch --help"
+      ],
+      "steps": [
+        {
+          "name": "cc-switch --help",
+          "command": "done-coding cc-switch --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1488,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "真实用法",
+          "command": "",
+          "status": "skipped",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "真实用法需要模型服务的账号与 API Key",
+          "summary": []
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "cli-dex",
+      "group": "cli",
+      "title": "done-coding dex",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 dex --help"
+      ],
+      "steps": [
+        {
+          "name": "dex --help",
+          "command": "done-coding dex --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1479,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "真实用法",
+          "command": "",
+          "status": "skipped",
+          "exitCode": null,
+          "durationMs": 0,
+          "reason": "真实用法需要模型服务的账号与 API Key",
+          "summary": []
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "cli-harness",
+      "group": "cli",
+      "title": "done-coding harness",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "# 准备最小治理目录 docs/governance（MODULES.md 一个领域、backlog 一个条目）",
+        "npx -y done-coding@0.23.4 harness --help",
+        "npx -y done-coding@0.23.4 harness lists",
+        "npx -y done-coding@0.23.4 harness lists -c",
+        "npx -y done-coding@0.23.4 harness check"
+      ],
+      "steps": [
+        {
+          "name": "harness --help",
+          "command": "done-coding harness --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1478,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "harness lists",
+          "command": "done-coding harness lists",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1532,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "harness lists -c",
+          "command": "done-coding harness lists -c",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1521,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "harness check",
+          "command": "done-coding harness check",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1545,
+          "reason": null,
+          "summary": []
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "cli-completion",
+      "group": "cli",
+      "title": "done-coding completion",
+      "reproduce": [
+        "mkdir -p cli-smoke/src && cd cli-smoke && npm init -y && echo '# cli-smoke' > README.md",
+        "npx -y done-coding@0.23.4 completion --help",
+        "npx -y done-coding@0.23.4 completion"
+      ],
+      "steps": [
+        {
+          "name": "completion --help",
+          "command": "done-coding completion --help",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1493,
+          "reason": null,
+          "summary": []
+        },
+        {
+          "name": "completion",
+          "command": "done-coding completion",
+          "status": "pass",
+          "exitCode": 0,
+          "durationMs": 1467,
+          "reason": null,
+          "summary": []
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "cli-create-readme-usage",
+      "group": "cli",
+      "title": "create-done-coding 按 README 的位置参数用法",
+      "reproduce": [
+        "npx -y create-done-coding@0.18.1 acc-readme < /dev/null",
+        "npx -y create-done-coding@0.18.1 acc-readme -c < /dev/null"
+      ],
+      "steps": [
+        {
+          "name": "位置参数 acc-readme",
+          "command": "create-done-coding acc-readme",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 362,
+          "reason": "报未知选项，README 的用法不可用",
+          "summary": [
+            "无法识别的选项：acc-readme"
+          ],
+          "expected": "与 README「API 文档」一致：项目名作为位置参数被接受，`-c` 是 `--justCloneFromDoneCoding` 的简写；非交互时进入模板选择并因缺少模板参数退出。"
+        },
+        {
+          "name": "位置参数 acc-readme -c",
+          "command": "create-done-coding acc-readme -c",
+          "status": "fail",
+          "exitCode": 1,
+          "durationMs": 354,
+          "reason": "报未知选项，README 的用法不可用",
+          "summary": [
+            "无法识别这些选项：c, acc-readme"
+          ],
+          "expected": "与 README「API 文档」一致：项目名作为位置参数被接受，`-c` 是 `--justCloneFromDoneCoding` 的简写；非交互时进入模板选择并因缺少模板参数退出。"
+        }
+      ],
+      "status": "fail"
+    }
+  ]
+}
