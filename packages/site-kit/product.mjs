@@ -6,7 +6,7 @@ import {
   rmSync,
   writeFileSync,
 } from "node:fs";
-import { join } from "node:path";
+import { join, posix } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadContent } from "./content.mjs";
 import { defineSite } from "./index.mjs";
@@ -63,6 +63,48 @@ const escapeMustache = (md) => {
   }
 };
 
+/**
+ * 文档可链接同版本的 demo/。演示是独立构建的静态应用，不是 VitePress 页面：
+ * 把这类相对链接改成演示的站内地址，并加 target 让 VitePress 路由与死链检查放行。
+ * demoHomes 按版本根目录（当前版本为 ""，历史版本为 v/<版本>/）记录演示是否发布；
+ * 没有演示的版本不改写，链接照常按死链报错。
+ */
+const rewriteDemoLinks = (md, { base, demoHomes }) => {
+  md.core.ruler.push("demo_links", (state) => {
+    const page = state.env.relativePath;
+    if (!page) {
+      return;
+    }
+    const root = page.match(new RegExp(`^(?:${ARCHIVE_DIR}/[^/]+/)?`))[0];
+    const published = demoHomes.get(root);
+    if (published === undefined) {
+      return;
+    }
+    const links = state.tokens
+      .flatMap((token) => token.children ?? [])
+      .filter((token) => token.type === "link_open");
+    for (const link of links) {
+      const href = link.attrGet("href") ?? "";
+      const [, pathname, suffix] = href.match(/^([^?#]*)(.*)$/);
+      if (pathname === "" || /^(?:[a-z][a-z\d+.-]*:|\/)/i.test(pathname)) {
+        continue;
+      }
+      const target = posix.join(posix.dirname(page), pathname);
+      if (target !== `${root}demo` && !target.startsWith(`${root}demo/`)) {
+        continue;
+      }
+      // 未发布的历史演示改指该版本首页，首页说明了不提供的原因
+      link.attrSet(
+        "href",
+        published
+          ? `${base}${target === `${root}demo` ? `${target}/` : target}${suffix}`
+          : `${base}${root}`,
+      );
+      link.attrSet("target", "_self");
+    }
+  });
+};
+
 const escapeRegExp = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 const searchOptions = {
@@ -106,7 +148,14 @@ export const defineProductSite = ({ configUrl, base, title, tagline }) => {
   const site = defineSite({ base, title, description: tagline });
   site.srcDir = GENERATED_DIR;
   // 内容产物按纯 Markdown 渲染：原始 HTML 与 Vue 标签按文本显示，正文里的 `<T>` 不会被当作模板编译
-  site.markdown = { html: false, config: escapeMustache };
+  const demoHomes = new Map();
+  site.markdown = {
+    html: false,
+    config: (md) => {
+      escapeMustache(md);
+      rewriteDemoLinks(md, { base, demoHomes });
+    },
+  };
 
   if (!content) {
     writeFileSync(
@@ -136,6 +185,9 @@ export const defineProductSite = ({ configUrl, base, title, tagline }) => {
   );
   const sidebar = { "/docs/": toSidebar(content.nav, "") };
   const demos = content.demoDir ? [[content.demoDir, "demo"]] : [];
+  if (content.demoDir) {
+    demoHomes.set("", true);
+  }
 
   for (const archived of content.archived) {
     const prefix = versionPrefix(archived.version);
@@ -143,6 +195,9 @@ export const defineProductSite = ({ configUrl, base, title, tagline }) => {
     cpSync(archived.docsDir, join(dir, "docs"), { recursive: true });
     const portable =
       archived.demoDir !== null && isPortableDemo(archived.demoDir, base);
+    if (archived.demoDir !== null) {
+      demoHomes.set(`${ARCHIVE_DIR}/${archived.version}/`, portable);
+    }
     if (portable) {
       demos.push([archived.demoDir, `${ARCHIVE_DIR}/${archived.version}/demo`]);
     }

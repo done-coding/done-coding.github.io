@@ -34,7 +34,7 @@ done-coding 的公开站点。每个 app 构建到一个 URL 路径，由 `pnpm 
 
 - `current.json`：`{ "version": "0.100.1", "source": "<产品仓>@<提交>" }`
 - `docs/`：Markdown 文档，站内链接用相对路径
-- `demo/`：可选，已构建的静态演示，由产品仓用 `/<产品>/demo/` 作 base 构建
+- `demo/`：可选，已构建的静态演示，由产品仓用 `/<产品>/demo/` 作 base 构建；文档可用相对路径链接同版本的 `demo/`（如 `../demo/#/form`），站点改写为演示地址
 - `nav.json`：文档导航，非空数组，每项 `{ "text": 标题, "link"?: 相对 docs/ 的路径, "items"?: 子项 }`，`link` 和 `items` 至少有一个；`link` 可省略 `.md`，目录写成 `guide/`（对应 `guide/index.md`）
 
 `content/` 下每个版本目录都会发布：`current.json` 指定的版本在 `/<产品>/`，其余在 `/<产品>/v/<版本>/`，多于一个版本时导航出现版本切换，站内搜索只索引当前版本。历史版本的演示只有不引用 `/<产品>/demo/` 绝对路径时才发布到 `/<产品>/v/<版本>/demo/`。

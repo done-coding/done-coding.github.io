@@ -660,6 +660,19 @@ const searchIndex = (dist) => {
   return file ? readFileSync(join(chunks, file), "utf8") : null;
 };
 
+/** 产物 HTML 中文字为 text 的链接地址；找不到返回 null */
+const linkHref = (html, text) =>
+  html.match(new RegExp(`<a [^>]*href="([^"]*)"[^>]*>${text}</a>`))?.[1] ??
+  null;
+
+/** 站内地址（含 base）对应的首页在产物中存在 */
+const servesIndex = (dist, base, href) =>
+  href !== null &&
+  href.startsWith(base) &&
+  existsSync(
+    join(dist, href.slice(base.length).replace(/#.*$/, ""), "index.html"),
+  );
+
 /** 夹具（当前与历史两个版本）构建出的产物：文档、导航、版本切换、搜索、SEO，并通过站点检查 */
 const testFixtureBuild = (site) => {
   const { name, base } = site;
@@ -679,6 +692,19 @@ const testFixtureBuild = (site) => {
       `${name} 导航进入页面`,
       docPage.includes(`${base}docs/guide/start.html`) &&
         docPage.includes("样例指南"),
+    );
+    const demoHref = linkHref(docPage, "样例演示");
+    expect(
+      `${name} 文档指向演示的链接是演示首页地址`,
+      demoHref === `${base}demo/` &&
+        servesIndex(built.dist, base, demoHref) &&
+        /<a [^>]*target="_self"[^>]*>样例演示</.test(docPage),
+      demoHref,
+    );
+    expect(
+      `${name} 深层文档指向演示的链接保留锚点`,
+      linkHref(read(built.dist, "docs/guide/start.html"), "演示表单") ===
+        `${base}demo/#/form`,
     );
     const home = read(built.dist, "index.html");
     expect(
@@ -723,6 +749,13 @@ const testFixtureBuild = (site) => {
       existsSync(join(built.dist, `v/${OLDER_VERSION}/demo/assets/app.js`)),
     );
     const olderDoc = read(built.dist, `v/${OLDER_VERSION}/docs/overview.html`);
+    const olderDemoHref = linkHref(olderDoc, "历史演示");
+    expect(
+      `${name} 历史版本文档指向本版本演示`,
+      olderDemoHref === `${older}demo/` &&
+        servesIndex(built.dist, base, olderDemoHref),
+      olderDemoHref,
+    );
     expect(
       `${name} 历史版本侧栏指向本版本`,
       olderDoc.includes(`${older}docs/overview.html`) &&
@@ -825,6 +858,13 @@ const testProductSite = (site) => {
           `${base}v/${OLDER_VERSION}/demo/`,
         ),
     );
+    expect(
+      `${name} 未发布的历史演示链接改指该版本首页`,
+      linkHref(
+        read(boundDemo.dist, `v/${OLDER_VERSION}/docs/overview.html`),
+        "历史演示",
+      ) === `${base}v/${OLDER_VERSION}/`,
+    );
   }
 
   const emptyDir = join(tmp, `${name}-empty`);
@@ -868,6 +908,19 @@ const testProductSite = (site) => {
     `${name} 文档内坏链接使构建失败`,
     deadLink.status !== 0,
     deadLink.output,
+  );
+
+  const noDemo = buildProduct(
+    site,
+    `${name}-no-demo-out`,
+    brokenContent(`${name}-no-demo`, (_, version) =>
+      rmSync(join(version, "demo"), { recursive: true }),
+    ),
+  );
+  expect(
+    `${name} 无演示的版本链接演示使构建失败`,
+    noDemo.status !== 0 && noDemo.output.includes("dead link"),
+    noDemo.output,
   );
 
   testFormalSite(site);
