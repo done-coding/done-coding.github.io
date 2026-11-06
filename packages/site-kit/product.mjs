@@ -52,6 +52,17 @@ const homePage = (hero) =>
 const isPortableDemo = (demoDir, base) =>
   !readFileSync(join(demoDir, "index.html"), "utf8").includes(`${base}demo/`);
 
+/** VitePress 把 Markdown 编译成 Vue 模板，正文与行内代码里的 {{ }} 改成实体，避免被当作插值 */
+const escapeMustache = (md) => {
+  for (const rule of ["text", "code_inline"]) {
+    const render = md.renderer.rules[rule];
+    md.renderer.rules[rule] = (...args) =>
+      render(...args)
+        .replaceAll("{{", "&#123;&#123;")
+        .replaceAll("}}", "&#125;&#125;");
+  }
+};
+
 const escapeRegExp = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 const searchOptions = {
@@ -94,6 +105,8 @@ export const defineProductSite = ({ configUrl, base, title, tagline }) => {
 
   const site = defineSite({ base, title, description: tagline });
   site.srcDir = GENERATED_DIR;
+  // 内容产物按纯 Markdown 渲染：原始 HTML 与 Vue 标签按文本显示，正文里的 `<T>` 不会被当作模板编译
+  site.markdown = { html: false, config: escapeMustache };
 
   if (!content) {
     writeFileSync(

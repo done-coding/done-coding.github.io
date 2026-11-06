@@ -660,9 +660,9 @@ const searchIndex = (dist) => {
   return file ? readFileSync(join(chunks, file), "utf8") : null;
 };
 
-const testProductSite = (site) => {
+/** 夹具（当前与历史两个版本）构建出的产物：文档、导航、版本切换、搜索、SEO，并通过站点检查 */
+const testFixtureBuild = (site) => {
   const { name, base } = site;
-
   const built = buildProduct(site, `${name}-fixture`, fixture);
   expect(`${name} 夹具可构建`, built.status === 0, built.output);
   if (built.status === 0) {
@@ -684,6 +684,16 @@ const testProductSite = (site) => {
     expect(
       `${name} 首页显示版本和演示入口`,
       home.includes(FIXTURE_VERSION) && home.includes(`${base}demo/`),
+    );
+    expect(`${name} 有内容时不显示建设中`, !home.includes("文档建设中"));
+    const generic = read(built.dist, "docs/guide/generic.html");
+    expect(
+      `${name} 尖括号、标签与插值按文本显示`,
+      generic.includes("createBridge&lt;C extends object&gt;(options)") &&
+        generic.includes("&lt;MyWidget /&gt;") &&
+        generic.includes("插值 {{ value }}") &&
+        generic.includes("<code>{{ code }}</code>"),
+      generic,
     );
     expect(
       `${name} 演示原样发布`,
@@ -748,6 +758,32 @@ const testProductSite = (site) => {
     const result = check(assembled);
     expect(`${name} 夹具产物通过站点检查`, result.status === 0, result.output);
   }
+};
+
+/** 正式站：按是否已有内容产物分别判断，且不含夹具内容 */
+const testFormalSite = (site) => {
+  const { name, base } = site;
+  const formal = join(repo, "dist", base);
+  const formalHome = read(formal, "index.html");
+  if (existsSync(join(repo, site.dir, "content", "current.json"))) {
+    expect(
+      `${name} 正式站有内容产物时渲染文档、不显示建设中`,
+      !formalHome.includes("文档建设中") && existsSync(join(formal, "docs")),
+    );
+  } else {
+    expect(
+      `${name} 正式站无内容产物时显示建设中`,
+      formalHome.includes("文档建设中"),
+    );
+  }
+  const leaked = allText(formal).find((text) => text.includes(SAMPLE_MARK));
+  expect(`${name} 正式站不含夹具内容`, leaked === undefined);
+};
+
+const testProductSite = (site) => {
+  const { name, base } = site;
+
+  testFixtureBuild(site);
 
   const single = buildProduct(
     site,
@@ -834,13 +870,7 @@ const testProductSite = (site) => {
     deadLink.output,
   );
 
-  const formal = join(repo, "dist", base);
-  expect(
-    `${name} 正式站显示建设中`,
-    read(formal, "index.html").includes("文档建设中"),
-  );
-  const leaked = allText(formal).find((text) => text.includes(SAMPLE_MARK));
-  expect(`${name} 正式站不含夹具内容`, leaked === undefined);
+  testFormalSite(site);
 };
 
 const allText = (dir) =>
