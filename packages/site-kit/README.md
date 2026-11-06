@@ -21,7 +21,11 @@ export default defineProductSite({
 export { default } from "@done-coding/site-kit/theme";
 ```
 
-`defineProductSite` 读 `content/current.json` 指向的内容产物，校验后生成 `.generated/` 源目录（不进仓）：站点首页在 `<base>`，文档在 `<base>docs/`，演示原样发布到 `<base>demo/`。缺 `current.json` 时首页显示「文档建设中」，产物不合契约时构建失败并说明原因。
+`defineProductSite` 读 `content/` 下的内容产物，校验后生成 `.generated/` 源目录（不进仓）：`current.json` 指向的版本首页在 `<base>`，文档在 `<base>docs/`，演示原样发布到 `<base>demo/`；其余版本目录在 `<base>v/<版本>/`，导航出现版本切换，演示只在不引用 `<base>demo/` 绝对路径时随版本发布。有内容时启用 VitePress 本地搜索，只索引当前版本。缺 `current.json` 时首页显示「文档建设中」，任一版本不合契约时构建失败并说明原因。
+
+`defineSite` 给每页生成 canonical 与 Open Graph，地址取 `site.config.json` 的 `origin`。
+
+本地搜索用 VitePress 自带的 minisearch，按空格和标点分词：中文正文是连续字符，只能按词首匹配，标题和以搜索词开头的分句（以标点分隔）能搜到，分句中间的词搜不到。
 
 ## 为什么选 VitePress
 

@@ -1,4 +1,4 @@
-// 站点检查和统计开关的反例测试，全部在系统临时目录进行，不动根 dist。
+// 站点检查、统计开关、产品站外壳、SEO 与兼容性矩阵的正反例测试，全部在系统临时目录进行，不动根 dist。
 import { spawnSync } from "node:child_process";
 import {
   cpSync,
@@ -12,6 +12,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import { indexablePages, renderSitemap } from "./site-pages.mjs";
 
 const repo = resolve(import.meta.dirname, "..");
 const script = (name) => join(repo, "scripts", name);
@@ -64,7 +65,33 @@ const expectCheckFails = (label, mutate, mention) => {
   );
 };
 
-const page = (body) => `<!doctype html><html><body>${body}</body></html>`;
+// 链接类用例的页面标为 noindex，不触发 SEO 检查
+const page = (body, head = '<meta name="robots" content="noindex" />') =>
+  `<!doctype html><html lang="zh-CN"><head>${head}</head><body>${body}</body></html>`;
+
+const ORIGIN = "https://done-coding.github.io";
+
+/** 带完整 SEO 元信息的页面，path 为相对站根的路径 */
+const seoPage = (path, body, { canonical } = {}) => {
+  const url =
+    canonical ?? `${ORIGIN}/${path.replace(/(^|\/)index\.html$/, "$1")}`;
+  return page(
+    body,
+    `<title>页</title><meta name="description" content="说明" /><link rel="canonical" href="${url}" /><meta property="og:title" content="页" /><meta property="og:description" content="说明" /><meta property="og:url" content="${url}" />`,
+  );
+};
+
+/** 把页面加进被检目录的 sitemap */
+const addToSitemap = (dir, path) => {
+  const file = join(dir, "sitemap.xml");
+  writeFileSync(
+    file,
+    readFileSync(file, "utf8").replace(
+      "</urlset>",
+      `  <url><loc>${ORIGIN}/${path}</loc></url>\n</urlset>`,
+    ),
+  );
+};
 
 const testCheckSite = () => {
   expect("check-site 放行正式产物", check(join(repo, "dist")).status === 0);
@@ -123,16 +150,162 @@ const testCheckSite = () => {
   );
 };
 
-const buildPortal = (name, configPath) => {
+const testSeoAndA11y = () => {
+  const formal = join(repo, "dist");
+  const sitemap = read(formal, "sitemap.xml");
+  expect(
+    "sitemap 列出门户、矩阵页和产品站首页",
+    [
+      `${ORIGIN}/`,
+      `${ORIGIN}/compatibility.html`,
+      `${ORIGIN}/forge/`,
+      `${ORIGIN}/cli/`,
+    ].every((url) => sitemap.includes(`<loc>${url}</loc>`)),
+    sitemap,
+  );
+  expect("sitemap 不列 404 页", !sitemap.includes("404.html"));
+  expect(
+    "robots.txt 指向 sitemap",
+    read(formal, "robots.txt").includes(`Sitemap: ${ORIGIN}/sitemap.xml`),
+  );
+  const forgeHome = read(formal, "forge/index.html");
+  expect(
+    "产品站首页有 canonical 和 Open Graph",
+    forgeHome.includes(`<link rel="canonical" href="${ORIGIN}/forge/">`) &&
+      forgeHome.includes('property="og:title"'),
+    forgeHome.slice(0, 2000),
+  );
+
+  const good = copySite("seo-正例");
+  writeFileSync(
+    join(good, "ok.html"),
+    seoPage(
+      "ok.html",
+      '<h1>一</h1><h2>二</h2><h3>三</h3><h1>回到一</h1><h2>二</h2><img src="/x.png" alt="">',
+    ),
+  );
+  writeFileSync(join(good, "x.png"), "");
+  addToSitemap(good, "ok.html");
+  // 演示是产品仓的独立应用，不按文档页检查
+  mkdirSync(join(good, "forge", "demo"), { recursive: true });
+  writeFileSync(
+    join(good, "forge", "demo", "index.html"),
+    '<html><body><h1>演示</h1><h4>跳级</h4><img src="./x.png"></body></html>',
+  );
+  writeFileSync(join(good, "forge", "demo", "x.png"), "");
+  writeFileSync(join(good, "forge", "demo", "big.js"), "x".repeat(2_000_000));
+  const goodResult = check(good);
+  expect(
+    "check-site 放行合规页面与演示内的问题",
+    goodResult.status === 0,
+    goodResult.output,
+  );
+
+  const writePage =
+    (path, html, { inSitemap = true } = {}) =>
+    (dir) => {
+      writeFileSync(join(dir, path), html);
+      if (inSitemap) {
+        addToSitemap(dir, path);
+      }
+    };
+  expectCheckFails(
+    "缺 canonical",
+    (dir) =>
+      writeFileSync(
+        join(dir, "privacy.html"),
+        read(dir, "privacy.html").replace(/<link rel="canonical"[^>]*>/, ""),
+      ),
+    "privacy.html 的 canonical",
+  );
+  expectCheckFails(
+    "canonical 指向别处",
+    writePage(
+      "seo.html",
+      seoPage("seo.html", "<h1>页</h1>", { canonical: `${ORIGIN}/other.html` }),
+    ),
+    "seo.html 的 canonical",
+  );
+  expectCheckFails(
+    "缺 description",
+    writePage(
+      "seo.html",
+      seoPage("seo.html", "<h1>页</h1>").replace(
+        '<meta name="description" content="说明" />',
+        "",
+      ),
+    ),
+    "seo.html 缺少 meta description",
+  );
+  expectCheckFails(
+    "页面未列入 sitemap",
+    writePage("seo.html", seoPage("seo.html", "<h1>页</h1>"), {
+      inSitemap: false,
+    }),
+    "sitemap.xml 未列出 seo.html",
+  );
+  expectCheckFails(
+    "缺 sitemap",
+    (dir) => rmSync(join(dir, "sitemap.xml")),
+    "sitemap.xml",
+  );
+  expectCheckFails(
+    "缺 robots",
+    (dir) => rmSync(join(dir, "robots.txt")),
+    "robots.txt",
+  );
+  expectCheckFails(
+    "图片缺 alt",
+    writePage("a11y.html", page('<h1>页</h1><img src="/x.png">')),
+    "缺少 alt",
+  );
+  expectCheckFails(
+    "标题跳级",
+    writePage("a11y.html", page("<h1>一</h1><h3>三</h3>")),
+    "从 h1 跳到 h3",
+  );
+  expectCheckFails(
+    "缺 lang",
+    writePage(
+      "a11y.html",
+      '<html><head><meta name="robots" content="noindex" /></head><body></body></html>',
+    ),
+    "缺少 lang",
+  );
+  expectCheckFails(
+    "脚本超出体积预算",
+    (dir) => writeFileSync(join(dir, "huge.js"), "x".repeat(1100 * 1024)),
+    "huge.js 体积",
+  );
+  expectCheckFails(
+    "页面超出体积预算",
+    writePage("huge.html", page("x".repeat(300 * 1024))),
+    "huge.html 体积",
+  );
+};
+
+const emptyResults = join(tmp, "acceptance-empty");
+mkdirSync(emptyResults);
+
+/** 按门户的 build 脚本构建：静态复制与注入，再填兼容性矩阵 */
+const buildPortal = (
+  name,
+  configPath,
+  { acceptanceDir = emptyResults } = {},
+) => {
   const cwd = join(tmp, name);
   mkdirSync(cwd);
   cpSync(join(repo, "apps/portal/public"), join(cwd, "public"), {
     recursive: true,
   });
-  const result = run("node", [script("build-static.mjs")], {
-    cwd,
-    env: { SITE_CONFIG_PATH: configPath },
-  });
+  const env = { SITE_CONFIG_PATH: configPath, ACCEPTANCE_DIR: acceptanceDir };
+  let result = run("node", [script("build-static.mjs")], { cwd, env });
+  if (result.status === 0) {
+    result = run("node", [join(repo, "apps/portal/render-compatibility.mjs")], {
+      cwd,
+      env,
+    });
+  }
   return { ...result, dist: join(cwd, "dist") };
 };
 
@@ -160,7 +333,12 @@ const testAnalytics = () => {
   const portalOn = buildPortal("portal-on", on);
   expect("门户有值配置可构建", portalOn.status === 0, portalOn.output);
 
-  for (const file of ["index.html", "404.html", "privacy.html"]) {
+  for (const file of [
+    "index.html",
+    "404.html",
+    "privacy.html",
+    "compatibility.html",
+  ]) {
     expect(
       `门户 ${file} null 时不加载脚本`,
       !read(portalOff.dist, file).includes("data-website-id"),
@@ -192,6 +370,32 @@ const testAnalytics = () => {
     !/analytics:(?:on|off)/.test(privacyOff + privacyOn),
   );
 
+  expect(
+    "门户页面有 canonical，404 不加",
+    read(portalOff.dist, "privacy.html").includes(
+      `<link rel="canonical" href="${ORIGIN}/privacy.html" />`,
+    ) && !read(portalOff.dist, "404.html").includes("canonical"),
+  );
+  const noDescription = join(tmp, "portal-no-description");
+  mkdirSync(noDescription);
+  cpSync(join(repo, "apps/portal/public"), join(noDescription, "public"), {
+    recursive: true,
+  });
+  writeFileSync(
+    join(noDescription, "public", "extra.html"),
+    '<!doctype html><html lang="zh-CN"><head><title>无说明</title></head><body></body></html>',
+  );
+  const missingDescription = run("node", [script("build-static.mjs")], {
+    cwd: noDescription,
+    env: { SITE_CONFIG_PATH: off },
+  });
+  expect(
+    "门户页面缺 description 时构建失败并说明",
+    missingDescription.status !== 0 &&
+      missingDescription.output.includes("extra.html"),
+    missingDescription.output,
+  );
+
   const invalid = buildPortal("portal-invalid", writeConfig("invalid", 123));
   expect(
     "websiteId 类型错误时构建失败并说明",
@@ -217,13 +421,131 @@ const testAnalytics = () => {
   }
 };
 
+const resultsFile = (date, cases, extra = {}) => ({
+  schemaVersion: 1,
+  date,
+  environment: {
+    os: "Darwin 22.6.0",
+    arch: "x64",
+    node: "v24.0.0",
+    pnpm: "12.15.0",
+  },
+  packages: {
+    "create-done-coding": "0.18.1",
+    "done-coding": "0.23.4",
+    "@done-coding/forge": "0.100.1",
+  },
+  forgeToolchain: { "@done-coding/forge": "0.100.1", vue: "3.5.0" },
+  groupTitles: {
+    template: "项目模板",
+    forge: "forge 消费者",
+    cli: "cli 子命令",
+  },
+  filter: { groups: ["template", "forge", "cli"], only: null },
+  totals: {
+    pass: cases.filter((item) => item.status === "pass").length,
+    fail: cases.filter((item) => item.status === "fail").length,
+    skipped: 0,
+  },
+  cases,
+  ...extra,
+});
+
+const testCompatibility = () => {
+  const off = writeConfig("compat-off", null);
+  const empty = buildPortal("compat-empty", off);
+  expect(
+    "兼容性矩阵无结果时显示暂无验收结果",
+    empty.status === 0 &&
+      read(empty.dist, "compatibility.html").includes("暂无验收结果"),
+    empty.output,
+  );
+
+  const dir = join(tmp, "acceptance-results");
+  const write = (date, results) => {
+    mkdirSync(join(dir, date), { recursive: true });
+    writeFileSync(join(dir, date, "results.json"), JSON.stringify(results));
+  };
+  const step = (name, status) => ({ name, status });
+  write(
+    "2026-01-01",
+    resultsFile("2026-01-01", [
+      { group: "template", title: "旧结果模板", status: "pass", steps: [] },
+    ]),
+  );
+  write(
+    "2026-02-01",
+    resultsFile("2026-02-01", [
+      {
+        group: "template",
+        title: "template-monorepo（workspace）",
+        status: "pass",
+        steps: [step("构建", "pass")],
+      },
+      {
+        group: "forge",
+        title: "最小 Vite + Vue 3 项目",
+        status: "fail",
+        steps: [step("vite build", "pass"), step("vue-tsc", "fail")],
+      },
+      {
+        group: "cli",
+        title: "done-coding <script>x</script>",
+        status: "pass",
+        steps: [],
+      },
+    ]),
+  );
+  // 不是日期目录或没有 results.json 的条目不算
+  mkdirSync(join(dir, "2099-01-01"));
+  const built = buildPortal("compat-results", off, { acceptanceDir: dir });
+  expect("兼容性矩阵有结果时可构建", built.status === 0, built.output);
+  if (built.status === 0) {
+    const html = read(built.dist, "compatibility.html");
+    expect(
+      "兼容性矩阵取最近一次结果",
+      html.includes("验收日期 2026-02-01") && !html.includes("旧结果模板"),
+    );
+    expect(
+      "兼容性矩阵按产品列出版本与通过数",
+      html.includes("create-done-coding 0.18.1，1/1 通过") &&
+        html.includes("@done-coding/forge 0.100.1，0/1 通过") &&
+        html.includes("done-coding 0.23.4"),
+      html,
+    );
+    expect(
+      "兼容性矩阵标出失败与未通过的步骤",
+      /status-fail">失败<\/td>\s*<td>vue-tsc<\/td>/.test(html),
+      html,
+    );
+    expect(
+      "兼容性矩阵转义结果中的 HTML",
+      html.includes("&lt;script&gt;x&lt;/script&gt;") &&
+        !html.includes("<script>x</script>"),
+    );
+    expect("兼容性矩阵不留占位注释", !html.includes("<!-- compatibility -->"));
+  }
+
+  const formal = read(join(repo, "dist"), "compatibility.html");
+  expect(
+    "正式站兼容性矩阵已填充",
+    !formal.includes("<!-- compatibility -->") &&
+      (formal.includes("验收日期") || formal.includes("暂无验收结果")),
+  );
+};
+
 const SAMPLE_MARK = "仅用于契约测试";
 const fixture = join(repo, "packages/site-kit/fixtures/content");
 const FIXTURE_VERSION = "0.0.0-fixture";
+const OLDER_VERSION = "0.0.0-older";
+const OLDER_MARK = "zebrafinch";
+
+const productApps = () =>
+  JSON.parse(readFileSync(join(repo, "site.config.json"), "utf8")).apps;
 
 const productSites = () =>
-  JSON.parse(readFileSync(join(repo, "site.config.json"), "utf8")).apps.filter(
-    ({ dir }) => existsSync(join(repo, dir, ".vitepress/config.mjs")),
+  productApps().filter(({ dir }) =>
+    existsSync(join(repo, dir, ".vitepress/config.mjs")),
   );
 
 const buildProduct = ({ dir }, name, contentDir) => {
@@ -314,7 +636,29 @@ const brokenCases = [
     (_, version) => rmSync(join(version, "demo/index.html")),
     "index.html",
   ],
+  [
+    "历史版本目录名不合法",
+    (dir) =>
+      cpSync(join(dir, OLDER_VERSION), join(dir, "bad name"), {
+        recursive: true,
+      }),
+    "目录名不是合法版本号",
+  ],
+  [
+    "历史版本缺-nav",
+    (dir) => rmSync(join(dir, OLDER_VERSION, "nav.json")),
+    "nav.json",
+  ],
 ];
+
+/** 本地搜索索引的内容；没有索引返回 null */
+const searchIndex = (dist) => {
+  const chunks = join(dist, "assets", "chunks");
+  const file = existsSync(chunks)
+    ? readdirSync(chunks).find((name) => name.startsWith("@localSearchIndex"))
+    : undefined;
+  return file ? readFileSync(join(chunks, file), "utf8") : null;
+};
 
 const testProductSite = (site) => {
   const { name, base } = site;
@@ -346,11 +690,105 @@ const testProductSite = (site) => {
       read(built.dist, "demo/index.html") ===
         read(join(fixture, FIXTURE_VERSION), "demo/index.html"),
     );
+    const older = `${base}v/${OLDER_VERSION}/`;
+    expect(
+      `${name} 多版本时显示版本切换`,
+      home.includes(`${FIXTURE_VERSION}（当前）`) &&
+        home.includes(`href="${older}"`),
+    );
+    expect(
+      `${name} 历史版本文档在独立路径`,
+      read(built.dist, `v/${OLDER_VERSION}/docs/overview.html`).includes(
+        "历史样例概览",
+      ),
+    );
+    const olderHome = read(built.dist, `v/${OLDER_VERSION}/index.html`);
+    expect(
+      `${name} 历史版本首页链接其文档与演示`,
+      olderHome.includes(`${older}docs/overview.html`) &&
+        olderHome.includes(`href="${older}demo/"`),
+    );
+    expect(
+      `${name} 可迁移的历史演示发布到版本路径`,
+      existsSync(join(built.dist, `v/${OLDER_VERSION}/demo/assets/app.js`)),
+    );
+    const olderDoc = read(built.dist, `v/${OLDER_VERSION}/docs/overview.html`);
+    expect(
+      `${name} 历史版本侧栏指向本版本`,
+      olderDoc.includes(`${older}docs/overview.html`) &&
+        !olderDoc.includes(`${base}docs/guide/start.html`),
+    );
+    const index = searchIndex(built.dist);
+    expect(
+      `${name} 生成本地搜索索引且含当前版本`,
+      index !== null && index.includes("样例入门"),
+    );
+    expect(
+      `${name} 搜索索引不含历史版本`,
+      index !== null && !index.includes(OLDER_MARK),
+    );
+    expect(
+      `${name} 文档页 canonical 与 Open Graph`,
+      docPage.includes(
+        `<link rel="canonical" href="${ORIGIN}${base}docs/overview.html">`,
+      ) &&
+        docPage.includes(
+          `<meta property="og:url" content="${ORIGIN}${base}docs/overview.html">`,
+        ),
+      docPage.slice(0, 3000),
+    );
     const assembled = copySite(`${name}-assembled`);
     rmSync(join(assembled, base), { recursive: true });
     cpSync(built.dist, join(assembled, base), { recursive: true });
+    // 换入夹具产物后按拼装规则重写 sitemap，再跑完整站点检查
+    writeFileSync(
+      join(assembled, "sitemap.xml"),
+      renderSitemap(ORIGIN, indexablePages(assembled, productApps())),
+    );
     const result = check(assembled);
     expect(`${name} 夹具产物通过站点检查`, result.status === 0, result.output);
+  }
+
+  const single = buildProduct(
+    site,
+    `${name}-single-out`,
+    brokenContent(`${name}-single`, (dir) =>
+      rmSync(join(dir, OLDER_VERSION), { recursive: true }),
+    ),
+  );
+  expect(`${name} 单版本可构建`, single.status === 0, single.output);
+  if (single.status === 0) {
+    const home = read(single.dist, "index.html");
+    expect(
+      `${name} 单版本不显示版本切换`,
+      !home.includes(`${FIXTURE_VERSION}（当前）`) &&
+        !home.includes(`${base}v/`),
+    );
+  }
+
+  const boundDemo = buildProduct(
+    site,
+    `${name}-bound-demo-out`,
+    brokenContent(`${name}-bound-demo`, (dir) =>
+      writeFileSync(
+        join(dir, OLDER_VERSION, "demo/index.html"),
+        `<script type="module" src="${base}demo/assets/app.js"></script>`,
+      ),
+    ),
+  );
+  expect(
+    `${name} 绑定当前路径的历史演示可构建`,
+    boundDemo.status === 0,
+    boundDemo.output,
+  );
+  if (boundDemo.status === 0) {
+    expect(
+      `${name} 绑定当前路径的历史演示不发布`,
+      !existsSync(join(boundDemo.dist, `v/${OLDER_VERSION}/demo`)) &&
+        !read(boundDemo.dist, `v/${OLDER_VERSION}/index.html`).includes(
+          `${base}v/${OLDER_VERSION}/demo/`,
+        ),
+    );
   }
 
   const emptyDir = join(tmp, `${name}-empty`);
@@ -365,6 +803,7 @@ const testProductSite = (site) => {
     const home = read(missing.dist, "index.html");
     expect(`${name} 缺产物显示建设中`, home.includes("文档建设中"));
     expect(`${name} 缺产物无文档目录`, !existsSync(join(missing.dist, "docs")));
+    expect(`${name} 缺产物不生成搜索索引`, searchIndex(missing.dist) === null);
   }
 
   for (const [label, mutate, mention] of brokenCases) {
@@ -411,7 +850,9 @@ const allText = (dir) =>
 
 try {
   testCheckSite();
+  testSeoAndA11y();
   testAnalytics();
+  testCompatibility();
   productSites().forEach(testProductSite);
 } finally {
   rmSync(tmp, { recursive: true, force: true });

@@ -106,3 +106,57 @@ footer {
   color: var(--muted);
   font-size: 14px;
 }
+
+main.wide {
+  max-width: 960px;
+}
+
+footer a + a {
+  margin-left: 16px;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
+th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.status-pass {
+  color: #1a7f37;
+}
+
+.status-fail {
+  color: #c62828;
+}
+
+@media (prefers-color-scheme: dark) {
+  .status-pass {
+    color: #6fd08c;
+  }
+
+  .status-fail {
+    color: #ff8a80;
+  }
+}

@@ -5,6 +5,7 @@
     { "name": "forge-site", "dir": "apps/forge-site", "base": "/forge/" },
     { "name": "cli-site", "dir": "apps/cli-site", "base": "/cli/" }
   ],
+  "budgets": { "pageKB": 256, "assetKB": 1024 },
   "analytics": {
     "websiteId": null,
     "trackerUrl": "https://cloud.umami.is/script.js"

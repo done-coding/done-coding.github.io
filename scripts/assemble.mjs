@@ -1,4 +1,5 @@
-// 按 site.config.json 把各 app 的 dist/ 拼到根 dist/ 对应路径，供 GitHub Pages 发布。
+// 按 site.config.json 把各 app 的 dist/ 拼到根 dist/ 对应路径，供 GitHub Pages 发布；
+// 再生成覆盖全站的 sitemap.xml 和 robots.txt。
 import {
   cpSync,
   existsSync,
@@ -8,8 +9,9 @@ import {
   writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
+import { indexablePages, renderSitemap } from "./site-pages.mjs";
 
-const { apps } = JSON.parse(readFileSync("site.config.json", "utf8"));
+const { origin, apps } = JSON.parse(readFileSync("site.config.json", "utf8"));
 
 rmSync("dist", { recursive: true, force: true });
 mkdirSync("dist");
@@ -21,3 +23,12 @@ for (const { name, dir, base } of apps) {
   cpSync(source, join("dist", base), { recursive: true });
 }
 writeFileSync("dist/.nojekyll", "");
+
+writeFileSync(
+  "dist/sitemap.xml",
+  renderSitemap(origin, indexablePages("dist", apps)),
+);
+writeFileSync(
+  "dist/robots.txt",
+  `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`,
+);

@@ -71,25 +71,12 @@ const validateNav = (items, { navPath, docsDir }, trail = "") => {
   });
 };
 
-/** 没有 current.json 返回 null，表示内容尚未到位；其余不合契约一律抛错。 */
-export const loadContent = (contentRoot) => {
-  const currentPath = join(contentRoot, "current.json");
-  if (!existsSync(currentPath)) {
-    return null;
-  }
-  const current = readJson(currentPath);
-  if (current === null || typeof current !== "object") {
-    fail(currentPath, "必须是对象");
-  }
-  const { version, source } = current;
-  if (typeof version !== "string" || !VERSION_PATTERN.test(version)) {
-    fail(currentPath, `version 不是合法版本号：${JSON.stringify(version)}`);
-  }
-  if (typeof source !== "string" || source === "") {
-    fail(currentPath, "source 必须是非空字符串");
-  }
-
+/** 校验一个版本目录：docs/ 有文档、nav.json 合契约、demo/ 有首页（可选） */
+const loadVersion = (contentRoot, version) => {
   const versionDir = join(contentRoot, version);
+  if (!VERSION_PATTERN.test(version)) {
+    fail(versionDir, `目录名不是合法版本号：${JSON.stringify(version)}`);
+  }
   if (!isDirectory(versionDir)) {
     fail(versionDir, "current.json 指向的版本目录不存在");
   }
@@ -110,9 +97,41 @@ export const loadContent = (contentRoot) => {
   }
   return {
     version,
-    source,
     docsDir,
     nav,
     demoDir: existsSync(demoDir) ? demoDir : null,
   };
+};
+
+/** 版本号从新到旧，数字段按数值比较 */
+const newestFirst = (a, b) =>
+  b.version.localeCompare(a.version, "en", { numeric: true });
+
+/**
+ * 没有 current.json 返回 null，表示内容尚未到位；其余不合契约一律抛错。
+ * content/ 下的每个目录都是一个版本，current.json 指定默认显示的版本，其余放进 archived。
+ */
+export const loadContent = (contentRoot) => {
+  const currentPath = join(contentRoot, "current.json");
+  if (!existsSync(currentPath)) {
+    return null;
+  }
+  const current = readJson(currentPath);
+  if (current === null || typeof current !== "object") {
+    fail(currentPath, "必须是对象");
+  }
+  const { version, source } = current;
+  if (typeof version !== "string" || !VERSION_PATTERN.test(version)) {
+    fail(currentPath, `version 不是合法版本号：${JSON.stringify(version)}`);
+  }
+  if (typeof source !== "string" || source === "") {
+    fail(currentPath, "source 必须是非空字符串");
+  }
+  const archived = readdirSync(contentRoot)
+    .filter(
+      (entry) => entry !== version && isDirectory(join(contentRoot, entry)),
+    )
+    .map((entry) => loadVersion(contentRoot, entry))
+    .sort(newestFirst);
+  return { ...loadVersion(contentRoot, version), source, archived };
 };
