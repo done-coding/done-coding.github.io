@@ -15,7 +15,9 @@ after: "tz5nrg"
 |---|---|---|
 | docs→demo 链接改写与夹具用例（lnz6qr） | 死链已修复；验收 3「真实内容 verify 全绿」因下方阻塞未达成 | 21bb4ee |
 | 刷新所涉模块快照 | 已更新 | 本批治理提交 |
-| 归档本批 | **阻塞，未归档**（见“阻塞”） | |
+| 阻塞 ⓑ：搜索索引单列预算 `searchIndexKB` 与测试 | 已完成 | efa30ad |
+| 阻塞 ⓐ：forge 演示引用 `/forge/analytics.js` | 已裁决由 forge 修正，等总协调重新发布真实内容后另行派发最终验证 | |
+| 归档本批 | 暂不归档，等 ⓐ 的最终验证 | |
 
 ## 进度
 
@@ -34,3 +36,22 @@ after: "tz5nrg"
   - 继续所需最小条件：总协调裁定其一并通知对应仓——（甲）forge 导出的演示去掉该引用或改为不依赖站点文件；或（乙）给出 `<base>analytics.js` 的契约（行为、`data-section` 语义、`websiteId` 为 null 时的表现），由本仓实现并同步隐私说明。
 ⓑ **forge 搜索索引超出脚本体积预算**：`forge/assets/chunks/@localSearchIndexroot.*.js` 1191 KB，超过 `site.config.json` `budgets.assetKB` 1024 KB。这是本仓的预算策略问题，不涉及产品仓，但调预算或改检查口径属于策略取舍，本批未擅自改。
   - 继续所需最小条件：总协调确认处理口径。建议：本地搜索索引只在打开搜索时按需加载，给它单列预算（如 `searchIndexKB`）或从脚本预算中豁免；不建议整体调高 `assetKB`。
+
+## 总协调裁决（2026-11-06）与执行
+
+- ⓐ 裁决：统计归站点，不归演示产物——由 forge 在导出内容产物时不再注入 `/forge/analytics.js`。本仓不实现 analytics.js、不改内容契约。forge 修正后总协调重新发布真实内容并另行派发最终验证；本次不处理 ⓐ。
+- ⓑ 裁决：采纳单列预算建议，不提高整体 `assetKB`。
+  - 实现（efa30ad）：`site.config.json` `budgets` 增 `searchIndexKB: 1536`；`check-site.mjs` 把路径匹配 `@localSearchIndex*.js` 的文件按该预算判，其余脚本样式仍按 `assetKB` 1024；检查输出“搜索索引体积”一段列出每个索引的实际大小与预算；`searchIndexKB` 缺失或非正数时报错。根 `AGENTS.md` 站点检查一句与 site-platform 快照同步补上（快照只改预算描述这一句，旧事实“脚本样式 1024 KB”保留，无需移出历史）。
+  - 取值依据：Node 22.23.3 下用 ~/acceptance-content 真实内容构建，forge 索引 1,219,200 B（1191 KB），cli 85,229 B（84 KB）。1536 KB = 1.5 × assetKB，比当前最大值多约 345 KB（约 29%），容得下文档正常增长；再超出说明索引该拆分或裁剪，届时重新评估而不是继续放宽。
+  - 测试（`test-site.mjs`，+2 条）：1100 KB 搜索索引在单列预算内放行且输出含“1100 KB，预算 1536 KB”；1600 KB 搜索索引失败并报“超过搜索索引预算”；原“脚本超出体积预算”用例 1100 KB（> assetKB、< searchIndexKB）仍失败，证明普通脚本不借用搜索索引预算。先写测试时两条新用例为红，实现后转绿。
+- 验证：
+  - 真实内容拷入 `apps/*-site/content/`，`pnpm verify` 退出 1，站点检查输出仅剩 ⓐ：
+    ```
+    搜索索引体积：
+    cli/assets/chunks/@localSearchIndexroot.CRYTJrCq.js 84 KB，预算 1536 KB
+    forge/assets/chunks/@localSearchIndexroot.CcXmOcxq.js 1191 KB，预算 1536 KB
+    forge/demo/index.html 的链接不存在：/forge/analytics.js
+    ```
+    同状态下单跑 `node scripts/test-site.mjs`：146 通过、4 失败，4 项失败的错误输出均只有 analytics.js 这一条（复制正式产物的用例继承了它）。
+  - 删除真实内容后：`pnpm lint` 通过；`pnpm verify` 退出 0（站点检查通过，站点测试 150 项全部通过）；`done-coding harness check --dir docs/governance` 全过（元闸 / 并行闸 / 收口形态 / 清单），`harness lists` 重生成零 diff。
+  - 本机 shell 默认 PATH 无 node，本轮用 `~/.nvm/versions/node/v22.23.3/bin`（与 CI 主版本一致）运行。
