@@ -4,10 +4,12 @@ title: 组织站功能补齐
 modules: [portal, forge-site, cli-site, site-platform]
 created: 2026-11-06
 source: 用户 2026-11-06 当轮下发
-after: "8j1b88"
+after: "tz5nrg"
 ---
 
 # 组织站功能补齐
+
+> 开始前先确认 `tz5nrg`（真实内容产物前的站点修正）已归档；未归档就先执行 `tz5nrg`，再回到本批。（总协调 2026-11-06 调整串序：8j1b88 → tz5nrg → nfp6e3）
 
 ## 任务
 
