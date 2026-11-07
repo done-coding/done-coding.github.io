@@ -17,7 +17,7 @@ after: ""
 | --- | --- | --- |
 | 在 forge 合入后的 HEAD 上 `pnpm -F @done-coding/showcase build` 与 `publish:content --site <本仓>`，替换 `cf59710` 中的 forge 内容（cf59710 未推送，可直接改写；cli 0.24.0 内容保留） | 未开始 | |
 | 浏览器验收：`/forge/demo/` 左侧示例菜单齐全、抽查 3 个示例页可渲染；`pnpm verify` 通过 | 未开始 | |
-| `acceptance/cases/templates.mjs` 中 DOCUMENTED_TEMPLATES 的来源说明从 0.23.3 更新为当前 cli 文档版本 0.24.0，并复核文档是否仍未选用具体模板 | 已完成 | 见进度 |
+| `acceptance/cases/templates.mjs` 中 DOCUMENTED_TEMPLATES 的来源说明从 0.23.3 更新为当前 cli 文档版本 0.24.0，并复核文档是否仍未选用具体模板 | 已完成 | `3df62d2` |
 | 刷新所涉模块快照与上层摘要；归档本批（只留 PROGRESS.md），`done-coding harness lists` / `check` 通过 | 未开始 | |
 | 串末：报告各批交付 sha、验证结果与未完成项（压缩由用户另行指示，本串不做） | 未开始 | |
 | 收工 | | |
