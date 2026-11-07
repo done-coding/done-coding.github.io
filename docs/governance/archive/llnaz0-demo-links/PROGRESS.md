@@ -17,7 +17,7 @@ after: "tz5nrg"
 | 刷新所涉模块快照 | 已更新 | 37bc299（forge-site、site-platform）、efa30ad（site-platform 预算句） |
 | 阻塞 ⓑ：搜索索引单列预算 `searchIndexKB` 与测试 | 已完成 | efa30ad |
 | 阻塞 ⓐ：forge 演示引用 `/forge/analytics.js` | 已消除：forge 修正后总协调发布真实内容（0.100.1、cli 0.23.3），最终验证通过，见下方「收口验证」 | f9a7fe7 |
-| 归档本批 | 已完成，无未完成条目需回池 | 见下方「收口验证」 |
+| 归档本批 | 已完成，无未完成条目需回池 | 7d2cf00 |
 
 ## 进度
 

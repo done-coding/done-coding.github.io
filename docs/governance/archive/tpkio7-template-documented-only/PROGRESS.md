@@ -16,11 +16,11 @@ after: ""
 | 项 | 状态 | 交付 sha |
 |---|---|---|
 | 第 0 步：收口并归档 llnaz0（真实内容下 `pnpm verify` 通过，无未完成条目） | 已完成 | 7d2cf00 |
-| `templates.mjs`：待验集合来自 `DOCUMENTED_TEMPLATES` 一处声明；发现用例只列模板；运行器单测更新 | 已完成 | SHA_MAIN |
-| `npm create done-coding` 用法写进验收用例与报告的复现步骤（templates、run、cli 的 create README 用例） | 已完成 | SHA_MAIN |
-| `acceptance/README.md` template 行改写 | 已完成 | SHA_MAIN |
-| 只跑模板组实测并记录结果（2026-11-07） | 已完成 | SHA_MAIN |
-| 刷新 product-acceptance 快照；归档本批 | 已完成 | SHA_MAIN |
+| `templates.mjs`：待验集合来自 `DOCUMENTED_TEMPLATES` 一处声明；发现用例只列模板；运行器单测更新 | 已完成 | 2a58574 |
+| `npm create done-coding` 用法写进验收用例与报告的复现步骤（templates、run、cli 的 create README 用例） | 已完成 | 2a58574 |
+| `acceptance/README.md` template 行改写 | 已完成 | 2a58574 |
+| 只跑模板组实测并记录结果（2026-11-07） | 已完成 | 2a58574 |
+| 刷新 product-acceptance 快照；归档本批 | 已完成 | 2a58574 |
 
 ## 阻塞
 
