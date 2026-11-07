@@ -12,7 +12,7 @@ const TEMPLATE_PROMPT = "请选择模板$";
  * 待验模板的唯一声明：与已发布文档选用的（不需要登录的）模板一致，逐项写明来源。
  * 条目格式：{ name: 模板名, branch: 分支或 null, source: "<文件>:<行>" }
  * 来源文件：apps/cli-site/content/<当前版本>/docs/packages/create.md（create-done-coding 的 README 导出）
- * 与 apps/*-site/content 下的其他文档。截至 cli 0.23.3，文档只写 `npm create done-coding [projectName]`，
+ * 与 apps/*-site/content 下的其他文档。截至 cli 0.24.0，文档只写 `npm create done-coding [projectName]`，
  * 没有选用任何具体模板，所以为空；文档选用模板后在此登记，不要自行挑选。
  */
 export const DOCUMENTED_TEMPLATES = [];
