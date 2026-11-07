@@ -1,0 +1,70 @@
+[
+  {
+    "text": "开始",
+    "link": "index.md"
+  },
+  {
+    "text": "@done-coding/cli-cc-switch",
+    "link": "packages/cc-switch.md"
+  },
+  {
+    "text": "done-coding",
+    "link": "packages/cli.md"
+  },
+  {
+    "text": "@done-coding/cli-skills",
+    "link": "packages/cli-skills.md"
+  },
+  {
+    "text": "@done-coding/cli-component",
+    "link": "packages/component.md"
+  },
+  {
+    "text": "@done-coding/cli-config",
+    "link": "packages/config.md"
+  },
+  {
+    "text": "create-done-coding",
+    "link": "packages/create.md"
+  },
+  {
+    "text": "@done-coding/cli-dex",
+    "link": "packages/dex.md"
+  },
+  {
+    "text": "@done-coding/cli-extract",
+    "link": "packages/extract.md"
+  },
+  {
+    "text": "@done-coding/cli-generator",
+    "link": "packages/generator.md"
+  },
+  {
+    "text": "@done-coding/cli-git",
+    "link": "packages/git.md"
+  },
+  {
+    "text": "@done-coding/cli-harness",
+    "link": "packages/harness.md"
+  },
+  {
+    "text": "@done-coding/cli-inject",
+    "link": "packages/inject.md"
+  },
+  {
+    "text": "@done-coding/cli-mcp",
+    "link": "packages/mcp.md"
+  },
+  {
+    "text": "@done-coding/cli-publish",
+    "link": "packages/publish.md"
+  },
+  {
+    "text": "@done-coding/cli-template",
+    "link": "packages/template.md"
+  },
+  {
+    "text": "@done-coding/cli-utils",
+    "link": "packages/utils.md"
+  }
+]

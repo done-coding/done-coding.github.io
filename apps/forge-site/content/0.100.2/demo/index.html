@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <script>(function installShowcaseFetch(scope, mockReply, mockPath) {
+  const originalFetch = scope.fetch.bind(scope);
+  const jsonResponse = (value, status = 200) => new Response(JSON.stringify(value), {
+    status,
+    headers: { "Content-Type": "application/json; charset=utf-8" }
+  });
+  const sample = (schema, key = "") => {
+    const variants = schema.anyOf ?? schema.oneOf;
+    if (Array.isArray(variants)) {
+      const payload = variants.find((item) => item.type !== "null");
+      return payload ? sample(payload, key) : null;
+    }
+    if (Array.isArray(schema.enum)) return schema.enum[0] ?? null;
+    const type = Array.isArray(schema.type) ? schema.type.find((item) => item !== "null") : schema.type;
+    if (type === "object" || schema.properties)
+      return Object.fromEntries(
+        Object.entries(schema.properties ?? {}).map(([name, child]) => [
+          name,
+          sample(child, name)
+        ])
+      );
+    if (type === "array") return [sample(schema.items ?? {})];
+    if (type === "boolean") return true;
+    if (type === "integer" || type === "number") return 1;
+    if (type === "null") return null;
+    if (/phone|mobile|tel/i.test(key)) return "000-0000-0000";
+    if (/email/i.test(key)) return "demo@example.com";
+    return "\u6F14\u793A\u6570\u636E";
+  };
+  scope.fetch = async (input, init) => {
+    const rawUrl = input instanceof Request ? input.url : String(input);
+    const url = new URL(rawUrl, scope.location.href);
+    if (url.origin !== scope.location.origin || ![mockPath, "/dev-ai/chat"].includes(url.pathname))
+      return originalFetch(input, init);
+    const request = new Request(
+      url,
+      input instanceof Request ? input : void 0
+    );
+    const signal = init?.signal ?? request.signal;
+    if (signal?.aborted) throw new DOMException("\u5DF2\u53D6\u6D88\u6F14\u793A\u8BF7\u6C42", "AbortError");
+    if ((init?.method ?? request.method).toUpperCase() !== "POST")
+      return jsonResponse({ error: { message: "\u6F14\u793A\u7AEF\u70B9\u4EC5\u652F\u6301 POST" } }, 405);
+    let body;
+    try {
+      const rawBody = init?.body !== void 0 ? await new Response(init.body).text() : await request.text();
+      body = JSON.parse(rawBody);
+      if (!body || typeof body !== "object" || Array.isArray(body))
+        throw new Error();
+    } catch {
+      return jsonResponse(
+        { error: { message: "\u6F14\u793A\u8BF7\u6C42\u9700\u8981 JSON \u5BF9\u8C61" } },
+        400
+      );
+    }
+    const messages = Array.isArray(body.messages) ? body.messages : [];
+    let reply = mockReply(messages);
+    if (body.response_format?.type === "json_object") {
+      const system = messages.find(
+        (message) => message.role === "system"
+      );
+      const text = typeof system?.content === "string" ? system.content : "";
+      try {
+        reply = JSON.stringify(
+          sample(JSON.parse(text.slice(text.indexOf("{"))))
+        );
+      } catch {
+        reply = JSON.stringify({ notice: "\u6F14\u793A\u6570\u636E\uFF0C\u4E0D\u4F1A\u8C03\u7528\u771F\u5B9E\u6A21\u578B" });
+      }
+    }
+    if (body.stream !== true)
+      return jsonResponse({
+        choices: [
+          {
+            index: 0,
+            message: { role: "assistant", content: reply },
+            finish_reason: "stop"
+          }
+        ]
+      });
+    const encoder = new TextEncoder();
+    let timer;
+    let abort;
+    const cleanup = () => {
+      clearTimeout(timer);
+      if (abort) signal?.removeEventListener("abort", abort);
+    };
+    const stream = new ReadableStream({
+      start(controller) {
+        let offset = 0;
+        abort = () => {
+          cleanup();
+          controller.error(new DOMException("\u5DF2\u53D6\u6D88\u6F14\u793A\u8BF7\u6C42", "AbortError"));
+        };
+        signal?.addEventListener("abort", abort, { once: true });
+        const send = () => {
+          if (offset >= reply.length) {
+            controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+            cleanup();
+            controller.close();
+            return;
+          }
+          controller.enqueue(
+            encoder.encode(
+              `data: ${JSON.stringify({
+                choices: [
+                  {
+                    index: 0,
+                    delta: { content: reply.slice(offset, offset + 24) }
+                  }
+                ]
+              })}
+
+`
+            )
+          );
+          offset += 24;
+          timer = setTimeout(send, 12);
+        };
+        send();
+      },
+      cancel: cleanup
+    });
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/event-stream; charset=utf-8",
+        "Cache-Control": "no-store"
+      }
+    });
+  };
+})(window, function mockAiReply(messages) {
+  const message = [...messages].reverse().find((item) => item?.role === "user");
+  const value = message?.content;
+  const echo = typeof value === "string" ? value : Array.isArray(value) ? value.map((part) => typeof part === "string" ? part : part?.text ?? "").join("") : "";
+  return "\u6F14\u793A\u6570\u636E\uFF1A\u672C\u56DE\u590D\u5728\u6D4F\u89C8\u5668\u6216\u5F00\u53D1\u670D\u52A1\u5668\u672C\u5730\u751F\u6210\uFF0C\u4E0D\u4F1A\u8C03\u7528\u771F\u5B9E\u6A21\u578B\u3002\n\n\u6211\u6536\u5230\u7684**\u6700\u540E\u4E00\u6761 user \u5185\u5BB9**\u539F\u6837\u56DE\u663E\u5982\u4E0B\uFF08\u8FD9\u5C31\u662F\u5361\u7247\u8FDB wire \u4E4B\u540E\u7684\u6837\u5B50\uFF09\uFF1A\n\n```\n" + (echo || "(\u7A7A)") + "\n```\n\n\u5361\u7247\u6309 `sseMessagesSerializer` \u7684\u89C4\u5219\u8FDB\u5165\u4E0A\u4E0B\u6587\u3002\u516C\u5F00\u6F14\u793A\u4EC5\u56DE\u663E\u5185\u5BB9\uFF0C\u4E0D\u6267\u884C\u6A21\u578B\u5DE5\u5177\u3002";
+}, "/mock-ai/chat");</script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Done Coding 演示</title>
+    <script type="module" crossorigin src="/forge/demo/assets/index-v4eWwmkk.js"></script>
+    <link rel="modulepreload" crossorigin href="/forge/demo/assets/vue-DSgKCo11.js">
+    <link rel="modulepreload" crossorigin href="/forge/demo/assets/lodash-DjpdH0c3.js">
+    <link rel="stylesheet" crossorigin href="/forge/demo/assets/vue-B85N_FQM.css">
+    <link rel="stylesheet" crossorigin href="/forge/demo/assets/index-DO1SpDYd.css">
+  </head>
+
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
