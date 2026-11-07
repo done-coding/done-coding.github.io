@@ -130,19 +130,32 @@ try {
   const notes = [];
 
   if (groups.has("template")) {
-    log("枚举模板");
+    log("列出模板");
     const discovery = await discoverTemplates(ctx);
+    const steps = [...discovery.steps];
+    for (const { name, branch, source } of discovery.missing) {
+      steps.push({
+        name: `选用模板 ${name}${branch ? ` ${branch}` : ""}`,
+        status: "fail",
+        reason: `交互界面的模板列表里没有它（文档来源 ${source}）`,
+      });
+    }
     record({
       id: "template-discovery",
       group: "template",
-      title: "列出全部模板",
+      title: "交互界面能列出模板",
       reproduce: [
-        `npx -y create-done-coding@${packages["create-done-coding"]} -n probe`,
-        "# 在交互界面中查看「请选择模板」与各模板的「请选择模板分支」",
+        `npm create done-coding@${packages["create-done-coding"]} probe`,
+        "# 在交互界面中查看「请选择模板」列表",
       ],
-      steps: discovery.steps,
+      steps,
       notes: [
-        `发现 ${discovery.variants.length} 个模板变体；${discovery.entries.length > 0 ? `「${discovery.entries.join("」「")}」是自填地址的入口，不是模板，未纳入矩阵` : "没有自填地址入口"}。`,
+        discovery.listed.length > 0
+          ? `交互界面列出 ${discovery.listed.length} 个模板；只验证文档选用的模板，其余不枚举、不创建。`
+          : "没有读到模板。",
+        discovery.variants.length > 0
+          ? `文档选用的待验模板：${discovery.variants.map((v) => `${v.label}${v.branch ? `（${v.branch}）` : ""}`).join("、")}。`
+          : "已发布文档没有选用任何具体模板，本组只验证交互界面能列出模板（见 acceptance/cases/templates.mjs 的 DOCUMENTED_TEMPLATES）。",
         "非交互模式没有列出模板的参数，只能在交互界面中查看；本运行器用伪终端读取。",
       ],
     });

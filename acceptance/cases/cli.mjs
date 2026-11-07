@@ -233,8 +233,8 @@ const readmeUsageCase = (ctx) =>
       group: "cli",
       title: "create-done-coding 按 README 的位置参数用法",
       reproduce: [
-        `npx -y create-done-coding@${version} acc-readme < /dev/null`,
-        `npx -y create-done-coding@${version} acc-readme -c < /dev/null`,
+        `npm create done-coding@${version} acc-readme < /dev/null`,
+        `npm create done-coding@${version} acc-readme -- -c < /dev/null`,
       ],
       steps,
     };

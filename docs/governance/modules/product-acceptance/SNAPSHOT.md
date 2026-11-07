@@ -8,9 +8,13 @@
 
 ## 业务快照
 
-三组用例：项目模板（交互枚举全部模板与分支，逐个创建 → 安装 → 构建 → lint → 测试）、forge 消费者（最小 Vite + Vue 3 项目按 README 引入，`vite build` 与 `vue-tsc` 在 `skipLibCheck` 开关两种情况下各跑一次，第三方诊断单列）、cli 子命令（每个子命令 `--help` 加一条最小真实用法，需要账号或会对外发布的只跑 `--help`）。
+三组用例：项目模板（交互界面能列出模板；只验 `acceptance/cases/templates.mjs` 的 `DOCUMENTED_TEMPLATES` 声明的、与已发布文档选用一致且不需登录的模板，逐个创建 → 安装 → 构建 → lint → 测试；截至 cli 0.23.3 文档没有选用具体模板，声明为空，只验列出模板）、forge 消费者（最小 Vite + Vue 3 项目按 README 引入，`vite build` 与 `vue-tsc` 在 `skipLibCheck` 开关两种情况下各跑一次，第三方诊断单列）、cli 子命令（每个子命令 `--help` 加一条最小真实用法，需要账号或会对外发布的只跑 `--help`）。
 
-最近一次结果见 [2026-11-06 报告](../../audits/acceptance/2026-11-06/report.md)：create-done-coding 0.18.1、done-coding 0.23.4、@done-coding/forge 0.100.1，33 个用例 11 通过 22 失败；问题草稿 11 份在同目录 `issues/`，尚未转交产品仓。门户兼容性矩阵页读取这份结果。
+最近一次完整矩阵见 [2026-11-06 报告](../../audits/acceptance/2026-11-06/report.md)：create-done-coding 0.18.1、done-coding 0.23.4、@done-coding/forge 0.100.1，33 个用例 11 通过 22 失败；其中模板类结论出自当时枚举全部模板的口径，已不作为模板结论使用（见下），问题草稿同目录 `issues/`，尚未转交产品仓。最近一次运行是只跑模板组的 [2026-11-07 报告](../../audits/acceptance/2026-11-07/report.md)：交互界面列出 11 个模板，1 个用例通过。
+
+模板类草稿的归属：2026-11-06 那 5 条模板问题出自 gitee 清单指向的老 template-* 仓，template-hub 已判不在本仓；需登录的 3 个模板不在验收范围。
+
+门户兼容性矩阵页读取最近一次的 results.json；只跑部分组时页面按筛选结果标注。
 
 ## UX 快照
 

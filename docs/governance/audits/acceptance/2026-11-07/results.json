@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-07",
+  "environment": {
+    "os": "Darwin 22.6.0",
+    "arch": "x64",
+    "memoryGB": 8,
+    "node": "v22.23.3",
+    "pnpm": "12.15.0",
+    "npm": "10.9.9",
+    "git": "2.39.2 (Apple Git-143)",
+    "python": "3.9.6"
+  },
+  "packages": {
+    "create-done-coding": "0.18.1",
+    "done-coding": "0.23.4"
+  },
+  "forgeToolchain": null,
+  "groupTitles": {
+    "template": "项目模板",
+    "forge": "forge 消费者",
+    "cli": "cli 子命令"
+  },
+  "filter": {
+    "groups": [
+      "template"
+    ],
+    "only": null
+  },
+  "notes": [],
+  "totals": {
+    "pass": 1,
+    "fail": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "id": "template-discovery",
+      "group": "template",
+      "title": "交互界面能列出模板",
+      "reproduce": [
+        "npm create done-coding@0.18.1 probe",
+        "# 在交互界面中查看「请选择模板」列表"
+      ],
+      "steps": [
+        {
+          "name": "列出模板",
+          "command": "create-done-coding -n probe（交互，列出「请选择模板$」的选项）",
+          "status": "pass",
+          "exitCode": null,
+          "durationMs": 8173,
+          "reason": null,
+          "summary": []
+        }
+      ],
+      "notes": [
+        "交互界面列出 11 个模板；只验证文档选用的模板，其余不枚举、不创建。",
+        "已发布文档没有选用任何具体模板，本组只验证交互界面能列出模板（见 acceptance/cases/templates.mjs 的 DOCUMENTED_TEMPLATES）。",
+        "非交互模式没有列出模板的参数，只能在交互界面中查看；本运行器用伪终端读取。"
+      ],
+      "status": "pass"
+    }
+  ]
+}

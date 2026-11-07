@@ -1,4 +1,5 @@
 // 项目模板：用已发布的 create-done-coding 交互创建，再按真实用户的步骤安装、构建、lint、测试。
+// 只验文档选用的模板；交互界面只验证能列出模板，不枚举清单里的全部模板和分支。
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { install } from "../lib/install.mjs";
@@ -7,10 +8,18 @@ import { runInteractive } from "../lib/pty.mjs";
 import { isolatedEnv, withTempDir } from "../lib/temp.mjs";
 
 const TEMPLATE_PROMPT = "请选择模板$";
+/**
+ * 待验模板的唯一声明：与已发布文档选用的（不需要登录的）模板一致，逐项写明来源。
+ * 条目格式：{ name: 模板名, branch: 分支或 null, source: "<文件>:<行>" }
+ * 来源文件：apps/cli-site/content/<当前版本>/docs/packages/create.md（create-done-coding 的 README 导出）
+ * 与 apps/*-site/content 下的其他文档。截至 cli 0.23.3，文档只写 `npm create done-coding [projectName]`，
+ * 没有选用任何具体模板，所以为空；文档选用模板后在此登记，不要自行挑选。
+ */
+export const DOCUMENTED_TEMPLATES = [];
+
 const BRANCH_PROMPT = "请选择模板分支";
 // 「自定义模版路径」「某个git平台用户仓库」是让用户自填地址的入口，不是模板
 const ENTRY_ONLY = /^(?:自定义模版路径|某个git平台用户仓库)/;
-const MULTI_BRANCH = /\(\d+个细分分支\)$/;
 
 /** 多个模板共有的已知现象，合并为一份草稿 */
 const SHARED_FAILURES = [
@@ -72,8 +81,23 @@ const enumerate = ({ ctx, dirs, name, prompt }) =>
     replacements: ctx.replacements(dirs),
   });
 
-/** 枚举全部模板及其分支，返回 [{label, branch}] 和发现阶段的步骤 */
-export const discoverTemplates = (ctx) =>
+/** 在列表中找出文档选用的模板，返回待验变体和列表里找不到的声明 */
+export const selectDocumented = (labels, documented = DOCUMENTED_TEMPLATES) => {
+  const variants = [];
+  const missing = [];
+  for (const { name, branch = null, source } of documented) {
+    const label = labels.find((item) => templateName(item) === name);
+    if (label) {
+      variants.push({ label, branch, source });
+    } else {
+      missing.push({ name, branch, source });
+    }
+  }
+  return { variants, missing };
+};
+
+/** 列出交互界面中的模板，返回文档选用的待验变体和发现阶段的步骤 */
+export const discoverTemplates = (ctx, documented = DOCUMENTED_TEMPLATES) =>
   withTempDir("discover", async (dirs) => {
     const list = await enumerate({
       ctx,
@@ -85,7 +109,8 @@ export const discoverTemplates = (ctx) =>
     if (list.status !== "pass" || labels.length === 0) {
       return {
         variants: [],
-        entries: [],
+        listed: [],
+        missing: [],
         steps: [
           {
             ...list,
@@ -95,36 +120,12 @@ export const discoverTemplates = (ctx) =>
         ],
       };
     }
-    const variants = [];
-    const steps = [list];
-    for (const label of labels.filter((item) => !ENTRY_ONLY.test(item))) {
-      if (!MULTI_BRANCH.test(label)) {
-        variants.push({ label, branch: null });
-        continue;
-      }
-      // 枚举分支要先选中模板，pty 驱动按 selects 处理前面的问题
-      const branches = await runInteractive({
-        name: `列出 ${templateName(label)} 的分支`,
-        spec: {
-          mode: "enumerate",
-          argv: [createBin(ctx), "-n", "probe"],
-          cwd: dirs.work,
-          timeoutSec: 120,
-          enumeratePrompt: BRANCH_PROMPT,
-          preSelects: { [TEMPLATE_PROMPT]: label },
-        },
-        env: isolatedEnv(dirs, ctx.sharedEnv),
-        replacements: ctx.replacements(dirs),
-      });
-      steps.push(branches);
-      for (const branch of branches.parsed?.items ?? []) {
-        variants.push({ label, branch });
-      }
-    }
+    const { variants, missing } = selectDocumented(labels, documented);
     return {
       variants,
-      entries: labels.filter((item) => ENTRY_ONLY.test(item)),
-      steps,
+      missing,
+      listed: labels.filter((item) => !ENTRY_ONLY.test(item)),
+      steps: [list],
     };
   });
 
@@ -153,7 +154,7 @@ const SCRIPT_STEPS = [
 ];
 
 /** 单个模板变体：创建 → 安装 → 构建 → lint → 测试（有则跑） */
-export const templateCase = async (ctx, { label, branch }) => {
+export const templateCase = async (ctx, { label, branch, source }) => {
   const name = templateName(label);
   const project = `acc-${slug(name)}${branch ? `-${slug(branch.split("/").at(-1))}` : ""}`;
   const title = branch ? `${name}（${branch}）` : name;
@@ -162,7 +163,7 @@ export const templateCase = async (ctx, { label, branch }) => {
     ...(branch ? { [BRANCH_PROMPT]: branch } : {}),
   };
   const reproduce = [
-    `npx -y create-done-coding@${ctx.packages["create-done-coding"]} -n ${project}`,
+    `npm create done-coding@${ctx.packages["create-done-coding"]} ${project}`,
     `# 交互中选择模板「${label}」${branch ? `、分支「${branch}」` : ""}，其余问题回车取默认值`,
     `cd ${project}`,
   ];
@@ -265,7 +266,7 @@ export const templateCase = async (ctx, { label, branch }) => {
       id: `template-${project}`,
       group: "template",
       title,
-      meta: { template: name, branch, packageManager: manager },
+      meta: { template: name, branch, source, packageManager: manager },
       reproduce,
       steps,
     };
