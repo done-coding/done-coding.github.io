@@ -14,10 +14,10 @@ after: "tz5nrg"
 | 项 | 状态 | 交付 sha |
 |---|---|---|
 | docs→demo 链接改写与夹具用例（lnz6qr） | 死链已修复；验收 3「真实内容 verify 全绿」因下方阻塞未达成 | 21bb4ee |
-| 刷新所涉模块快照 | 已更新 | 本批治理提交 |
+| 刷新所涉模块快照 | 已更新 | 37bc299（forge-site、site-platform）、efa30ad（site-platform 预算句） |
 | 阻塞 ⓑ：搜索索引单列预算 `searchIndexKB` 与测试 | 已完成 | efa30ad |
-| 阻塞 ⓐ：forge 演示引用 `/forge/analytics.js` | 已裁决由 forge 修正，等总协调重新发布真实内容后另行派发最终验证 | |
-| 归档本批 | 暂不归档，等 ⓐ 的最终验证 | |
+| 阻塞 ⓐ：forge 演示引用 `/forge/analytics.js` | 已消除：forge 修正后总协调发布真实内容（0.100.1、cli 0.23.3），最终验证通过，见下方「收口验证」 | f9a7fe7 |
+| 归档本批 | 已完成，无未完成条目需回池 | 见下方「收口验证」 |
 
 ## 进度
 
@@ -55,3 +55,10 @@ after: "tz5nrg"
     同状态下单跑 `node scripts/test-site.mjs`：146 通过、4 失败，4 项失败的错误输出均只有 analytics.js 这一条（复制正式产物的用例继承了它）。
   - 删除真实内容后：`pnpm lint` 通过；`pnpm verify` 退出 0（站点检查通过，站点测试 150 项全部通过）；`done-coding harness check --dir docs/governance` 全过（元闸 / 并行闸 / 收口形态 / 清单），`harness lists` 重生成零 diff。
   - 本机 shell 默认 PATH 无 node，本轮用 `~/.nvm/versions/node/v22.23.3/bin`（与 CI 主版本一致）运行。
+
+## 收口验证（2026-11-07，mbp2017 执行会话）
+
+- 依据：HEAD f9a7fe7 已含真实内容（forge 0.100.1 源 903475…、cli 0.23.3 源 32d223…）；`git grep analytics.js apps/*/content` 无结果（ⓐ 的引用已由 forge 移除）。
+- 命令：Node v22.23.3 下 `pnpm verify`，退出 0，站点检查通过，站点测试全部通过，其中含 cli-site 与 forge-site 的 docs→demo 链接用例。验收 3（真实内容下 `pnpm verify` 全绿）达成；真实内容本就在库，无需拷入拷出。
+- 所涉模块快照（forge-site、site-platform）已在 37bc299、efa30ad 更新，早于归档 commit；本次收口不改变系统事实，快照无需再改（核对：快照中 docs→demo 改写与 searchIndexKB 描述与代码一致）。
+- 未完成条目：无，lnz6qr 的三条验收全部满足，条目正文删除后整目录归档。
