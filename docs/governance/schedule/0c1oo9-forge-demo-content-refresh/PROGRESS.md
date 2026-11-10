@@ -39,6 +39,7 @@ forge `fix/showcase-content-demo`（`205912e`，rlkjn3：demo 恢复完整示例
 - **等待点（2026-11-07 实测）**：进入条件未满足。forge `205912e` 只在本地分支 `fix/showcase-content-demo`，远端无此分支（`git ls-remote --heads origin fix/showcase-content-demo` 为空），origin/master 仍为 `7f67bb1`。第 1、2、4 项依赖它，需用户推送并合入 forge master 后继续；继续时从第 1 项开始。
 - forge 本地工作区当前在 `feat/behavior-analytics`（另一批 jvd529 在途），重建内容产物时不得切换或改动该工作区，需另行确认构建用的检出方式（本串禁用 git worktree）。
 - 2026-11-08 复查仍未满足（forge origin/master `7f67bb1`，远端无含 `205912e` 的分支）。总协调分工：恢复后能交 Codex 的部分（第 1 项构建与产物替换、第 4 项快照与归档）优先交 Codex，Claude 复核；第 2 项浏览器验收由 Claude 在沙箱外执行。
+- 2026-11-10 用户已推送 master 至 `70970b7`，`cf59710`（空 demo 的 forge 0.100.2 内容）已上线，不能再改写：第 1 项改为追加新提交替换 forge 内容，cli 0.24.0 内容保留；在此之前线上 `/forge/demo/` 只有首页。
 
 ## 进度
 
