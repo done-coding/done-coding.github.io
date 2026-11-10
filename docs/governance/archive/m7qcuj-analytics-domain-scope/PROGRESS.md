@@ -17,8 +17,8 @@ after: "2zr2pz"
 | --- | --- | --- |
 | 门户与 VitePress 站的统计脚本带 `data-domains`、`data-exclude-search="true"`，测试覆盖；隐私说明同步 | 已完成 | `920491b` |
 | 本机预览不再发 `/api/send`；`pnpm lint`、`pnpm verify` 通过 | 已完成 | `920491b` |
-| `site.config.json` 的 `websiteId` 换成用户在 Umami 新建的 done-coding.github.io 站点 ID（文档站与 showcase 分开统计，113f1baf… 不再用于本站），隐私说明不变 | 已完成 | 见收口 |
-| 刷新 site-platform / portal 快照，归档本批，`done-coding harness lists` / `check` 通过 | 已完成 | 见收口 |
+| `site.config.json` 的 `websiteId` 换成用户在 Umami 新建的 done-coding.github.io 站点 ID（文档站与 showcase 分开统计，113f1baf… 不再用于本站），隐私说明不变 | 已完成 | `bbd49ec` |
+| 刷新 site-platform / portal 快照，归档本批，`done-coding harness lists` / `check` 通过 | 已完成 | `bbd49ec` |
 | 收工 | | |
 
 ## 边界
@@ -43,4 +43,4 @@ after: "2zr2pz"
 
 ## 收口
 
-交付 sha 见归档提交；`done-coding harness lists` / `check` 通过。
+交付 sha `bbd49ec`；`done-coding harness lists` / `check` 通过。
