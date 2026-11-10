@@ -1,0 +1,1 @@
+import{K as a,O as o,R as r,q as e,M as s,S as n,ae as p,u}from"./vue-BtEJNpb6.js";import{bH as i}from"./index-CqnmMPAT.js";import"./lodash-9CjMmqbV.js";const x=a({__name:"NoHeader",setup(c){const t=u();return(l,m)=>(s(),o(e(i),{fullViewport:""},{default:r(()=>[n("div",null,p(e(t).meta.title),1)]),_:1}))}});export{x as default};

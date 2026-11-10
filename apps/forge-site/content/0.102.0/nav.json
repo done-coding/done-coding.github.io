@@ -1,0 +1,559 @@
+[
+  {
+    "text": "core",
+    "items": [
+      {
+        "text": "概览",
+        "link": "core/index.md"
+      },
+      {
+        "text": "pro 组件目录",
+        "link": "core/src/components/compose/README.md"
+      },
+      {
+        "text": "pro/compose 组件目录",
+        "link": "core/src/components/compose/compose/README.md"
+      },
+      {
+        "text": "ListLayout（列表页）",
+        "link": "core/src/components/compose/compose/list-layout/docs/README-ListLayout.md"
+      },
+      {
+        "text": "ModalDetail（配置化 CRUD 弹窗 / 抽屉）",
+        "link": "core/src/components/compose/compose/modal-detail/docs/README-ModalDetail.md"
+      },
+      {
+        "text": "ModalForm（配置化表单弹窗 / 抽屉）",
+        "link": "core/src/components/compose/compose/modal-form/docs/README-ModalForm.md"
+      },
+      {
+        "text": "pro/layout 组件目录",
+        "link": "core/src/components/compose/layout/README.md"
+      },
+      {
+        "text": "AppAside（右侧补充区积木）",
+        "link": "core/src/components/compose/layout/app-aside/docs/README-AppAside.md"
+      },
+      {
+        "text": "AppBody（内容主体·RouterView + KeepAlive + 面包屑 affix）",
+        "link": "core/src/components/compose/layout/app-body/docs/README-AppBody.md"
+      },
+      {
+        "text": "AppFooter（底部状态条积木）",
+        "link": "core/src/components/compose/layout/app-footer/docs/README-AppFooter.md"
+      },
+      {
+        "text": "AppHeader（顶栏积木）",
+        "link": "core/src/components/compose/layout/app-header/docs/README-AppHeader.md"
+      },
+      {
+        "text": "AppLayout（应用布局总控·数据桥）",
+        "link": "core/src/components/compose/layout/app-layout/docs/README-AppLayout.md"
+      },
+      {
+        "text": "AppPageDetail（详情区 · 可独立成页）",
+        "link": "core/src/components/compose/layout/app-page-detail/docs/README-AppPageDetail.md"
+      },
+      {
+        "text": "AppPageListDetailLayout（列表 / 详情同页范式 · master-detail）",
+        "link": "core/src/components/compose/layout/app-page-list-detail-layout/docs/README-AppPageListDetailLayout.md"
+      },
+      {
+        "text": "AppPage（页面容器·撑满视口 + 四向悬浮插槽）",
+        "link": "core/src/components/compose/layout/app-page/docs/README-AppPage.md"
+      },
+      {
+        "text": "AppSidebar（侧边栏积木）",
+        "link": "core/src/components/compose/layout/app-sidebar/docs/README-AppSidebar.md"
+      },
+      {
+        "text": "ViewLayout（展示布局）",
+        "link": "core/src/components/compose/layout/view-layout/docs/README-ViewLayout.md"
+      },
+      {
+        "text": "bridge 模块（接线中枢）",
+        "link": "core/src/bridge/README.md"
+      },
+      {
+        "text": "可选行为端口（v0.101.0）",
+        "link": "core/src/bridge/docs/README-BehaviorPort.md"
+      },
+      {
+        "text": "bridge 模块引导（接线中枢）",
+        "link": "core/src/bridge/docs/README.md"
+      },
+      {
+        "text": "core 组件目录",
+        "link": "core/src/components/core/README.md"
+      },
+      {
+        "text": "core/basic 组件目录",
+        "link": "core/src/components/core/basic/README.md"
+      },
+      {
+        "text": "ActionBtnGroup（配置驱动按钮组）",
+        "link": "core/src/components/core/basic/action-btn-group/docs/README-ActionBtnGroup.md"
+      },
+      {
+        "text": "ActionBtn（确认闸门按钮）",
+        "link": "core/src/components/core/basic/action-btn/docs/README-ActionBtn.md"
+      },
+      {
+        "text": "AppCollapseToggle",
+        "link": "core/src/components/core/basic/docs/README-AppCollapseToggle.md"
+      },
+      {
+        "text": "DragFloat — 可拖拽悬浮容器",
+        "link": "core/src/components/core/basic/drag-float/docs/README-DragFloat.md"
+      },
+      {
+        "text": "HeightProvider（视口高度供给）",
+        "link": "core/src/components/core/basic/height-provider/docs/README-HeightProvider.md"
+      },
+      {
+        "text": "ShadowClone（影分身）",
+        "link": "core/src/components/core/basic/shadow-clone/docs/README-ShadowClone.md"
+      },
+      {
+        "text": "SlotLayoutFlowAside（主区 + 侧栏流式布局）",
+        "link": "core/src/components/core/basic/slot-layout-flow-aside/docs/README-SlotLayoutFlowAside.md"
+      },
+      {
+        "text": "SlotLayoutTemplate（透明转发包裹器）",
+        "link": "core/src/components/core/basic/slot-layout-template/docs/README-SlotLayoutTemplate.md"
+      },
+      {
+        "text": "WatchSize（尺寸观测组件）",
+        "link": "core/src/components/core/basic/watch-size/docs/README-WatchSize.md"
+      },
+      {
+        "text": "core/config 组件目录",
+        "link": "core/src/components/core/config/README.md"
+      },
+      {
+        "text": "AppTheme（主题切换器积木）",
+        "link": "core/src/components/core/config/app-theme/docs/README-AppTheme.md"
+      },
+      {
+        "text": "core/data 组件目录",
+        "link": "core/src/components/core/data/README.md"
+      },
+      {
+        "text": "BadgeMark（徽标标记）",
+        "link": "core/src/components/core/data/badge-mark/docs/README-BadgeMark.md"
+      },
+      {
+        "text": "BooleanTag（布尔状态标签）",
+        "link": "core/src/components/core/data/boolean-tag/docs/README-BooleanTag.md"
+      },
+      {
+        "text": "ImagePreviewTrigger（图片预览触发组件）",
+        "link": "core/src/components/core/data/image-preview-trigger/docs/README-ImagePreviewTrigger.md"
+      },
+      {
+        "text": "ModalImagePreview（图片预览弹窗·命令式入口）",
+        "link": "core/src/components/core/data/modal-image-preview/docs/README-ModalImagePreview.md"
+      },
+      {
+        "text": "core/feedback 组件目录",
+        "link": "core/src/components/core/feedback/README.md"
+      },
+      {
+        "text": "ActionConfirm（独立确认弹层）",
+        "link": "core/src/components/core/feedback/action-confirm/docs/README-ActionConfirm.md"
+      },
+      {
+        "text": "ModalConfirm（配置化确认弹窗 / 抽屉）",
+        "link": "core/src/components/core/feedback/modal-confirm/docs/README-ModalConfirm.md"
+      },
+      {
+        "text": "ModalVideoPreview（视频预览弹窗·lightbox 形态）",
+        "link": "core/src/components/core/feedback/modal-video-preview/docs/README-ModalVideoPreview.md"
+      },
+      {
+        "text": "VideoPreviewTrigger（视频预览触发组件）",
+        "link": "core/src/components/core/feedback/video-preview-trigger/docs/README-VideoPreviewTrigger.md"
+      },
+      {
+        "text": "core/other 组件目录",
+        "link": "core/src/components/core/other/README.md"
+      },
+      {
+        "text": "AutoRefreshGroup（工具栏自动刷新组）",
+        "link": "core/src/components/core/other/auto-refresh-group/docs/README-AutoRefreshGroup.md"
+      },
+      {
+        "text": "AutoRefresh（自动刷新开关）",
+        "link": "core/src/components/core/other/auto-refresh/docs/README-AutoRefresh.md"
+      },
+      {
+        "text": "hooks 模块",
+        "link": "core/src/hooks/README.md"
+      },
+      {
+        "text": "hooks 模块引导",
+        "link": "core/src/hooks/docs/README.md"
+      },
+      {
+        "text": "data 组件目录",
+        "link": "core/src/components/data/README.md"
+      },
+      {
+        "text": "DataGridView（网格数据容器）",
+        "link": "core/src/components/data/data-grid-view/docs/README-DataGridView.md"
+      },
+      {
+        "text": "DataListView（数据视图列表）",
+        "link": "core/src/components/data/data-list-view/docs/README-DataListView.md"
+      },
+      {
+        "text": "TableToolbar",
+        "link": "core/src/components/data/docs/README-TableToolbar.md"
+      },
+      {
+        "text": "InfiniteListView（通用无限滚动容器）",
+        "link": "core/src/components/data/infinite-list-view/docs/README-InfiniteListView.md"
+      },
+      {
+        "text": "TableEmpty",
+        "link": "core/src/components/data/table-empty/README.md"
+      },
+      {
+        "text": "TableEmpty（列表空态）",
+        "link": "core/src/components/data/table-empty/docs/README-TableEmpty.md"
+      },
+      {
+        "text": "TableMain（配置化数据表格）",
+        "link": "core/src/components/data/table-main/docs/README-TableMain.md"
+      },
+      {
+        "text": "feedback 组件目录",
+        "link": "core/src/components/feedback/README.md"
+      },
+      {
+        "text": "ModalPorter（弹窗注册表·命令式拉起）",
+        "link": "core/src/components/feedback/modal-porter/docs/README-ModalPorter.md"
+      },
+      {
+        "text": "ModalShelf（弹窗架子·层级治理）",
+        "link": "core/src/components/feedback/modal-shelf/docs/README-ModalShelf.md"
+      },
+      {
+        "text": "form 组件目录",
+        "link": "core/src/components/form/README.md"
+      },
+      {
+        "text": "FormActiveFilter（生效筛选条件条）",
+        "link": "core/src/components/form/form-active-filter/docs/README-FormActiveFilter.md"
+      },
+      {
+        "text": "FormInput（输入框原语）",
+        "link": "core/src/components/form/form-input/docs/README-FormInput.md"
+      },
+      {
+        "text": "FormItemNestFormList（嵌套行列表 C4）",
+        "link": "core/src/components/form/form-item-nest-form-list/docs/README-FormItemNestFormList.md"
+      },
+      {
+        "text": "FormItemNestForm（嵌套子表单 C1）",
+        "link": "core/src/components/form/form-item-nest-form/docs/README-FormItemNestForm.md"
+      },
+      {
+        "text": "FormMain（配置化表单主体）",
+        "link": "core/src/components/form/form-main/docs/README-FormMain.md"
+      },
+      {
+        "text": "FormSearch（搜索表单）",
+        "link": "core/src/components/form/form-search/docs/README-FormSearch.md"
+      },
+      {
+        "text": "FormSelectShadowClone",
+        "link": "core/src/components/form/form-select-shadow-clone/docs/README-FormSelectShadowClone.md"
+      },
+      {
+        "text": "FormSelect（选择器）",
+        "link": "core/src/components/form/form-select/docs/README-FormSelect.md"
+      },
+      {
+        "text": "FormShadowCloneDispatch（form 族 · 影分身骨架：漏斗开关 + popup）",
+        "link": "core/src/components/form/form-shadow-clone-dispatch/docs/README-FormShadowCloneDispatch.md"
+      },
+      {
+        "text": "FormSortSwitchGroup（复合排序组）& FormSortSwitch（单字段排序切换器）",
+        "link": "core/src/components/form/form-sort-switch-group/docs/README-FormSortSwitchGroup.md"
+      },
+      {
+        "text": "FormSubmitBtn（提交按钮）",
+        "link": "core/src/components/form/form-submit-btn/docs/README-FormSubmitBtn.md"
+      },
+      {
+        "text": "FormSubmitPanel（提交表单面板）",
+        "link": "core/src/components/form/form-submit-panel/docs/README-FormSubmitPanel.md"
+      },
+      {
+        "text": "FormUploadAudio（音频上传组件）",
+        "link": "core/src/components/form/form-upload-audio/docs/README-FormUploadAudio.md"
+      },
+      {
+        "text": "FormUploadImage（图片上传组件）",
+        "link": "core/src/components/form/form-upload-image/docs/README-FormUploadImage.md"
+      },
+      {
+        "text": "FormUploadVideo（视频上传组件）",
+        "link": "core/src/components/form/form-upload-video/docs/README-FormUploadVideo.md"
+      },
+      {
+        "text": "FormUpload（上传原语）",
+        "link": "core/src/components/form/form-upload/docs/README-FormUpload.md"
+      },
+      {
+        "text": "SelectModule（模块选择器）",
+        "link": "core/src/components/form/select-module/docs/README-SelectModule.md"
+      },
+      {
+        "text": "nav 组件目录",
+        "link": "core/src/components/nav/README.md"
+      },
+      {
+        "text": "AppBreadcrumb（面包屑积木）",
+        "link": "core/src/components/nav/app-breadcrumb/docs/README-AppBreadcrumb.md"
+      },
+      {
+        "text": "AppPageNavBar API",
+        "link": "core/src/components/nav/docs/README-AppPageNavBar.md"
+      },
+      {
+        "text": "MenuItemLeaf 内部 API",
+        "link": "core/src/components/nav/docs/README-MenuItemLeaf.md"
+      },
+      {
+        "text": "MenuItemSub（递归子菜单分组件）",
+        "link": "core/src/components/nav/menu-item-sub/docs/README-MenuItemSub.md"
+      },
+      {
+        "text": "MenuTree（树形菜单）",
+        "link": "core/src/components/nav/menu-tree/docs/README-MenuTree.md"
+      },
+      {
+        "text": "TabsMain（配置化页签容器）",
+        "link": "core/src/components/nav/tabs-main/docs/README-TabsMain.md"
+      }
+    ]
+  },
+  {
+    "text": "agent",
+    "items": [
+      {
+        "text": "概览",
+        "link": "agent/index.md"
+      },
+      {
+        "text": "components 组件族总引导",
+        "link": "agent/src/components/README.md"
+      },
+      {
+        "text": "bubble 气泡族",
+        "link": "agent/src/components/bubble/README.md"
+      },
+      {
+        "text": "AiBubbleContent（内部件 · 仅 API）",
+        "link": "agent/src/components/bubble/docs/README-AiBubbleContent.md"
+      },
+      {
+        "text": "AiBubbleFooter（内部件 · 仅 API）",
+        "link": "agent/src/components/bubble/docs/README-AiBubbleFooter.md"
+      },
+      {
+        "text": "AiCodeHeaderControl（内部件 · 仅 API）",
+        "link": "agent/src/components/bubble/docs/README-AiCodeHeaderControl.md"
+      },
+      {
+        "text": "AiContentSplit（内部件 · 仅 API）",
+        "link": "agent/src/components/bubble/docs/README-AiContentSplit.md"
+      },
+      {
+        "text": "AiPartRenderer（内部件 · 仅 API）",
+        "link": "agent/src/components/bubble/docs/README-AiPartRenderer.md"
+      },
+      {
+        "text": "AiThinkBox（内部件 · 仅 API）",
+        "link": "agent/src/components/bubble/docs/README-AiThinkBox.md"
+      },
+      {
+        "text": "AiTypewriter（内部件 · 仅 API）",
+        "link": "agent/src/components/bubble/docs/README-AiTypewriter.md"
+      },
+      {
+        "text": "config 配置族",
+        "link": "agent/src/components/config/README.md"
+      },
+      {
+        "text": "AiConfigProvider（对话根容器）",
+        "link": "agent/src/components/config/docs/README-AiConfigProvider.md"
+      },
+      {
+        "text": "dialogue 对话族",
+        "link": "agent/src/components/dialogue/README.md"
+      },
+      {
+        "text": "AiDialogue（全流程单会话对话）",
+        "link": "agent/src/components/dialogue/docs/README-AiDialogue.md"
+      },
+      {
+        "text": "AiDialogueGroup（多会话对话 + 操作条）",
+        "link": "agent/src/components/dialogue/docs/README-AiDialogueGroup.md"
+      },
+      {
+        "text": "AiDialogueWrap（浮层面板）",
+        "link": "agent/src/components/dialogue/docs/README-AiDialogueWrap.md"
+      },
+      {
+        "text": "AiMessageList（受控消息展示）",
+        "link": "agent/src/components/dialogue/docs/README-AiMessageList.md"
+      },
+      {
+        "text": "json-trigger 结构化输出族",
+        "link": "agent/src/components/json-trigger/README.md"
+      },
+      {
+        "text": "LlmJsonTrigger — LLM 结构化填充触发器",
+        "link": "agent/src/components/json-trigger/docs/README-LlmJsonTrigger.md"
+      },
+      {
+        "text": "operation 操作族",
+        "link": "agent/src/components/operation/README.md"
+      },
+      {
+        "text": "AiOperationBar（内部件 · 仅 API）",
+        "link": "agent/src/components/operation/docs/README-AiOperationBar.md"
+      },
+      {
+        "text": "AiOperationBtns（内部件 · 仅 API）",
+        "link": "agent/src/components/operation/docs/README-AiOperationBtns.md"
+      },
+      {
+        "text": "sender 输入族",
+        "link": "agent/src/components/sender/README.md"
+      },
+      {
+        "text": "AiSender（受控输入原语）",
+        "link": "agent/src/components/sender/docs/README-AiSender.md"
+      },
+      {
+        "text": "AiSenderHeader（内部件 · 仅 API）",
+        "link": "agent/src/components/sender/docs/README-AiSenderHeader.md"
+      },
+      {
+        "text": "hooks 模块",
+        "link": "agent/src/hooks/README.md"
+      },
+      {
+        "text": "hooks 模块引导",
+        "link": "agent/src/hooks/docs/README.md"
+      }
+    ]
+  },
+  {
+    "text": "flow",
+    "items": [
+      {
+        "text": "概览",
+        "link": "flow/index.md"
+      },
+      {
+        "text": "bridge 基座（公开 API）",
+        "link": "flow/src/bridge/docs/README.md"
+      },
+      {
+        "text": "components 组件族清单",
+        "link": "flow/src/components/README.md"
+      },
+      {
+        "text": "flow-custom-cell 节点族（内部件）",
+        "link": "flow/src/components/flow-custom-cell/README.md"
+      },
+      {
+        "text": "flow-custom-cell 内部件 API 段",
+        "link": "flow/src/components/flow-custom-cell/docs/README-内部件.md"
+      },
+      {
+        "text": "flow-run 运行态族",
+        "link": "flow/src/components/flow-run/README.md"
+      },
+      {
+        "text": "FlowRunBox（运行态二合一）",
+        "link": "flow/src/components/flow-run/docs/README-FlowRunBox.md"
+      },
+      {
+        "text": "FlowRunIo（节点进料 / 输出展示）",
+        "link": "flow/src/components/flow-run/docs/README-FlowRunIo.md"
+      },
+      {
+        "text": "FlowRunSteps（执行步骤树）",
+        "link": "flow/src/components/flow-run/docs/README-FlowRunSteps.md"
+      },
+      {
+        "text": "flow 编排族",
+        "link": "flow/src/components/flow/README.md"
+      },
+      {
+        "text": "FlowActionBar（操作栏）",
+        "link": "flow/src/components/flow/docs/README-FlowActionBar.md"
+      },
+      {
+        "text": "FlowBox（集大成容器）",
+        "link": "flow/src/components/flow/docs/README-FlowBox.md"
+      },
+      {
+        "text": "FlowEditor（画布）",
+        "link": "flow/src/components/flow/docs/README-FlowEditor.md"
+      },
+      {
+        "text": "FlowEditorMiniMap（小地图）",
+        "link": "flow/src/components/flow/docs/README-FlowEditorMiniMap.md"
+      },
+      {
+        "text": "FlowMaterialPanel（素材面板）",
+        "link": "flow/src/components/flow/docs/README-FlowMaterialPanel.md"
+      },
+      {
+        "text": "FlowNodeDetailPanel（节点详情面板）",
+        "link": "flow/src/components/flow/docs/README-FlowNodeDetailPanel.md"
+      },
+      {
+        "text": "hooks 引导（FlowEditor 内部机制）",
+        "link": "flow/src/components/flow/hooks/README.md"
+      }
+    ]
+  },
+  {
+    "text": "plugin-theme",
+    "items": [
+      {
+        "text": "概览",
+        "link": "plugin-theme/index.md"
+      },
+      {
+        "text": "shells — 主题外壳族",
+        "link": "plugin-theme/src/shells/README.md"
+      },
+      {
+        "text": "decor — 装饰层",
+        "link": "plugin-theme/src/shells/decor/README.md"
+      }
+    ]
+  },
+  {
+    "text": "plugin-tour",
+    "items": [
+      {
+        "text": "概览",
+        "link": "plugin-tour/index.md"
+      },
+      {
+        "text": "forge-plugin-tour —— 引导插件（族级文档）",
+        "link": "plugin-tour/src/README.md"
+      }
+    ]
+  }
+]

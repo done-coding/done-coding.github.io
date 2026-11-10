@@ -1,0 +1,1 @@
+import{K as a,P as n,S as s,ae as o,q as r,I as u,M as l,u as i}from"./vue-BtEJNpb6.js";const d=a({__name:"NeedPermission",setup(m){const t=i();return(p,e)=>(l(),n(u,null,[e[0]||(e[0]=s("div",null,"需要权限",-1)),s("div",null,o(r(t).meta),1)],64))}});export{d as default};
