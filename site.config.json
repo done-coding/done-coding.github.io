@@ -7,7 +7,7 @@
   ],
   "budgets": { "pageKB": 256, "assetKB": 1024, "searchIndexKB": 1536 },
   "analytics": {
-    "websiteId": null,
+    "websiteId": "113f1baf-0830-4993-a686-e6a17a04bdcf",
     "trackerUrl": "https://cloud.umami.is/script.js"
   }
 }
