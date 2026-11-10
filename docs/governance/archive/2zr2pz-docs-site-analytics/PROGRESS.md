@@ -15,10 +15,10 @@ after: ""
 
 | 项 | 状态 | 交付 sha |
 | --- | --- | --- |
-| `site.config.json` 的 `analytics.websiteId` 填 `113f1baf-0830-4993-a686-e6a17a04bdcf`；`pnpm lint`、`pnpm verify` 通过 | 已完成 | 见收口 |
-| 核对隐私说明与实际统计行为一致、门户点击事件名 `portal-to-forge` / `portal-to-cli` 不变 | 已完成 | 见收口 |
-| 本机预览打开门户、forge、cli 各一页，浏览器网络层确认请求发往 Umami 且带该 websiteId | 已完成 | 见收口 |
-| 刷新 site-platform / portal 快照，归档本批，`done-coding harness lists` / `check` 通过 | 已完成 | 见收口 |
+| `site.config.json` 的 `analytics.websiteId` 填 `113f1baf-0830-4993-a686-e6a17a04bdcf`；`pnpm lint`、`pnpm verify` 通过 | 已完成 | `7c43f94` |
+| 核对隐私说明与实际统计行为一致、门户点击事件名 `portal-to-forge` / `portal-to-cli` 不变 | 已完成 | `7c43f94` |
+| 本机预览打开门户、forge、cli 各一页，浏览器网络层确认请求发往 Umami 且带该 websiteId | 已完成 | `7c43f94` |
+| 刷新 site-platform / portal 快照，归档本批，`done-coding harness lists` / `check` 通过 | 已完成 | `7c43f94` |
 | 收工 | | |
 
 ## 边界
@@ -42,4 +42,4 @@ after: ""
 
 ## 收口
 
-交付 sha 见归档提交；`done-coding harness lists` / `check` 通过。
+交付 sha `7c43f94`；`done-coding harness lists` / `check` 通过。
