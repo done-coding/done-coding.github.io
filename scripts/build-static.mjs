@@ -23,7 +23,9 @@ const escapeAttr = (value) =>
 
 const scriptTag =
   attrs &&
-  `<script defer src="${escapeAttr(attrs.src)}" data-website-id="${escapeAttr(attrs["data-website-id"])}"></script>`;
+  `<script ${Object.entries(attrs)
+    .map(([name, value]) => `${name}="${escapeAttr(value)}"`)
+    .join(" ")}></script>`;
 
 const htmlFiles = (dir) =>
   readdirSync(dir).flatMap((entry) => {

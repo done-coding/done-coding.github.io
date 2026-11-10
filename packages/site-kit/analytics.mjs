@@ -13,7 +13,9 @@ export const readSiteConfig = () =>
   );
 
 /** websiteId 为 null 时返回 null，表示不加载统计脚本。 */
-export const getAnalyticsScriptAttrs = ({ analytics } = readSiteConfig()) => {
+export const getAnalyticsScriptAttrs = (
+  { analytics, origin } = readSiteConfig(),
+) => {
   const { websiteId, trackerUrl } = analytics ?? {};
   if (websiteId === null || websiteId === undefined) {
     return null;
@@ -28,5 +30,22 @@ export const getAnalyticsScriptAttrs = ({ analytics } = readSiteConfig()) => {
       `site.config.json 的 analytics.trackerUrl 必须是 https 地址，实际为：${JSON.stringify(trackerUrl)}`,
     );
   }
-  return { defer: "", src: trackerUrl, "data-website-id": websiteId };
+  let hostname;
+  try {
+    hostname = new URL(origin).hostname;
+    if (!hostname) {
+      throw new Error("URL 缺少 hostname");
+    }
+  } catch {
+    throw new Error(
+      `site.config.json 的 origin 必须是合法 URL 且包含 hostname，实际为：${JSON.stringify(origin)}`,
+    );
+  }
+  return {
+    defer: "",
+    src: trackerUrl,
+    "data-website-id": websiteId,
+    "data-domains": hostname,
+    "data-exclude-search": "true",
+  };
 };

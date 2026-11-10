@@ -371,6 +371,16 @@ const testAnalytics = () => {
       `门户 ${file} 有值时加载脚本`,
       read(portalOn.dist, file).includes(`data-website-id="${testId}"`),
     );
+    expect(
+      `门户 ${file} 有值时限定域名且排除查询参数`,
+      read(portalOn.dist, file).includes(
+        'data-domains="done-coding.github.io"',
+      ) && read(portalOn.dist, file).includes('data-exclude-search="true"'),
+    );
+    expect(
+      `门户 ${file} null 时不含统计范围属性`,
+      !/data-domains|data-exclude-search/.test(read(portalOff.dist, file)),
+    );
   }
 
   const home = read(portalOff.dist, "index.html");
@@ -427,6 +437,20 @@ const testAnalytics = () => {
     invalid.output,
   );
 
+  const invalidOriginPath = writeConfig("invalid-origin", testId);
+  const invalidOriginConfig = JSON.parse(
+    readFileSync(invalidOriginPath, "utf8"),
+  );
+  invalidOriginConfig.origin = "not-a-url";
+  writeFileSync(invalidOriginPath, JSON.stringify(invalidOriginConfig));
+  const invalidOrigin = buildPortal("portal-invalid-origin", invalidOriginPath);
+  expect(
+    "origin 不是合法 URL 时构建失败并说明",
+    invalidOrigin.status !== 0 &&
+      invalidOrigin.output.includes("origin 必须是合法 URL"),
+    invalidOrigin.output,
+  );
+
   const smokeOff = buildSmoke("smoke-off", off);
   expect("VitePress null 配置可构建", smokeOff.status === 0, smokeOff.output);
   const smokeOn = buildSmoke("smoke-on", on);
@@ -437,6 +461,17 @@ const testAnalytics = () => {
     expect(
       "VitePress 有值时加载脚本",
       read(smokeOn.dist, "index.html").includes(`data-website-id="${testId}"`),
+    );
+    expect(
+      "VitePress 有值时限定域名且排除查询参数",
+      read(smokeOn.dist, "index.html").includes(
+        'data-domains="done-coding.github.io"',
+      ) &&
+        read(smokeOn.dist, "index.html").includes('data-exclude-search="true"'),
+    );
+    expect(
+      "VitePress null 时不含统计范围属性",
+      !/data-domains|data-exclude-search/.test(htmlOff),
     );
     expect(
       "VitePress 页脚链接隐私说明",
