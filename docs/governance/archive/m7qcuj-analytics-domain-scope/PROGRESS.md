@@ -17,8 +17,8 @@ after: "2zr2pz"
 | --- | --- | --- |
 | 门户与 VitePress 站的统计脚本带 `data-domains`、`data-exclude-search="true"`，测试覆盖；隐私说明同步 | 已完成 | `920491b` |
 | 本机预览不再发 `/api/send`；`pnpm lint`、`pnpm verify` 通过 | 已完成 | `920491b` |
-| `site.config.json` 的 `websiteId` 换成用户在 Umami 新建的 done-coding.github.io 站点 ID（文档站与 showcase 分开统计，113f1baf… 不再用于本站），隐私说明不变 | 等待新 ID | |
-| 刷新 site-platform / portal 快照，归档本批，`done-coding harness lists` / `check` 通过 | 快照已刷新；待新 websiteId 后一并更新再归档 | |
+| `site.config.json` 的 `websiteId` 换成用户在 Umami 新建的 done-coding.github.io 站点 ID（文档站与 showcase 分开统计，113f1baf… 不再用于本站），隐私说明不变 | 已完成 | 见收口 |
+| 刷新 site-platform / portal 快照，归档本批，`done-coding harness lists` / `check` 通过 | 已完成 | 见收口 |
 | 收工 | | |
 
 ## 边界
@@ -38,3 +38,9 @@ after: "2zr2pz"
 - 验证结果：串行运行 `pnpm verify`（退出码 0，站点检查及全部测试通过）→ `pnpm lint`（退出码 0）。`rg -o` 提取 `dist/index.html`、`dist/forge/index.html`、`dist/cli/index.html` 的 Umami 标签，三者均含 `data-domains="done-coding.github.io"` 与 `data-exclude-search="true"`；门户 `defer=""` 与 VitePress 的 `defer` 为等效布尔属性。改动前 smoke 回归退出码 1，门户四页的新属性断言失败；改动后完整 verify 全部通过。未进行浏览器上报或真实入库验证；未提交、未 push、未发布、未访问 Umami。
 - 2026-11-10 浏览器实测（Claude，沙箱外）：`python3 -m http.server 4173 -d dist` 预览，cdp-ui 无头 Chrome 打开 `/?utm_source=test`、`/forge/?utm_source=test`、`/cli/?utm_source=test`。三页脚本均带 `data-domains="done-coding.github.io"`、`data-exclude-search="true"`；`umami` 对象已加载，并手动调用 `umami.track()` 后再等 4 秒，Resource Timing 中 Umami 请求只有 `https://cloud.umami.is/script.js`，无 `/api/send`。查询参数排除只能在线上上报时观察，本机未验证，依据为上方官方文档与源码核对。
 - 2026-11-10 变更（总协调转达）：用户要求文档站与 showcase 分开统计，将在 Umami 新建站点 done-coding.github.io，新 websiteId 转来后在本批更新 `site.config.json` 及快照中的 ID 描述，然后归档。等待点：新 websiteId。
+- 2026-11-10 新 ID（总协调转达，用户另建 Umami 账号下站点 done-coding.github.io）：`site.config.json` 的 `websiteId` 由 `113f1baf-0830-4993-a686-e6a17a04bdcf`（showcase 站点）换为 `7d70d9de-be1f-4f5d-a46b-ff8c1bfde39b`；隐私说明不变。快照替换：site-platform 原「已填入复用 showcase 的 Umami 站点 ID 113f1baf…」、根快照原「复用 showcase 的 Umami 站点 ID」，现为本站独立站点 ID、与 showcase 分开统计。验证：`pnpm verify` 退出码 0（站点测试全部通过），`pnpm lint` 退出码 0；`dist/index.html`、`dist/forge/index.html`、`dist/cli/index.html` 的 Umami 标签均为新 ID 且带 `data-domains`、`data-exclude-search`，`dist` 中已无 `113f1baf`。
+- 未验证：线上部署后的真实入库（需 push 并用有头浏览器访问线上，再在 Umami 后台查看）。
+
+## 收口
+
+交付 sha 见归档提交；`done-coding harness lists` / `check` 通过。
