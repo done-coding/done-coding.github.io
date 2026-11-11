@@ -15,10 +15,10 @@ forge 站、cli 站给每个已发布包显示 npm 徽章（npm 标志 + 最新�
 
 | 项 | 状态 | 交付 sha |
 | --- | --- | --- |
-| site-kit 支持按站点配置的包清单渲染徽章：产品站首页「npm 包」列表；有对应文档页的包在页首显示徽章；测试覆盖 | 已完成 | 见收口 |
-| forge 站登记 12 个包，cli 站登记各包；隐私说明补充徽章图片来自第三方 | 已完成 | 见收口 |
-| `pnpm lint`、`pnpm verify` 通过；本地预览实测两站徽章显示与链接、手机宽度不溢出 | 已完成 | 见收口 |
-| 刷新所涉快照，归档本批，`done-coding harness lists` / `check` 通过 | 已完成 | 见收口 |
+| site-kit 支持按站点配置的包清单渲染徽章：产品站首页「npm 包」列表；有对应文档页的包在页首显示徽章；测试覆盖 | 已完成 | `4e28f9f` |
+| forge 站登记 12 个包，cli 站登记各包；隐私说明补充徽章图片来自第三方 | 已完成 | `4e28f9f` |
+| `pnpm lint`、`pnpm verify` 通过；本地预览实测两站徽章显示与链接、手机宽度不溢出 | 已完成 | `4e28f9f` |
+| 刷新所涉快照，归档本批，`done-coding harness lists` / `check` 通过 | 已完成 | `a56df57` |
 | 收工 | | |
 
 ## 边界
@@ -51,4 +51,4 @@ forge 站、cli 站给每个已发布包显示 npm 徽章（npm 标志 + 最新�
 
 ## 收口
 
-交付 sha 见本表；`done-coding harness lists` / `check` 通过。未验证：线上部署后的显示（未 push）。
+功能 `4e28f9f`，快照与归档 `a56df57`；`done-coding harness lists` / `check` 通过。未验证：线上部署后的显示（未 push）。
