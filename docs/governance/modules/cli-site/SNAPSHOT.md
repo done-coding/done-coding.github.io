@@ -2,7 +2,7 @@
 
 ## 技术快照
 
-VitePress 站点，`.vitepress/` 只有配置和主题入口，逻辑在 `packages/site-kit`，与 forge 站共用。读 `content/` 下全部版本目录，`current.json` 指向的为当前版本，生成不进仓的 `.generated/` 作为源目录。内容按纯 Markdown 渲染（关闭原始 HTML，`{{ }}` 转义），正文中的尖括号与标签按文本显示。当前无内容产物，正式站显示「文档建设中」。
+VitePress 站点，`.vitepress/` 只有配置和主题入口，逻辑在 `packages/site-kit`，与 forge 站共用。读 `content/` 下全部版本目录，`current.json` 指向的为当前版本，生成不进仓的 `.generated/` 作为源目录。内容按纯 Markdown 渲染（关闭原始 HTML，`{{ }}` 转义），正文中的尖括号与标签按文本显示。当前内容产物有 0.23.3、0.24.0 两个版本，`current.json` 指向 0.24.0（来源 `done-coding-cli@b3a1b86af7ff3975e89b4619f305ef987bb7154b`）。
 
 ## 业务快照
 
@@ -11,3 +11,5 @@ VitePress 站点，`.vitepress/` 只有配置和主题入口，逻辑在 `packag
 ## UX 快照
 
 默认主题加共用页脚。有产物时首页在 `/cli/`，文档在 `/cli/docs/`，侧栏来自 `nav.json`；历史版本在 `/cli/v/<版本>/`，多版本时导航出现版本切换，只有一个版本时不显示；有内容时顶栏有站内搜索，只搜当前版本；演示可选，在 `/cli/demo/`。
+
+当前版本首页按 0.24.0 导航顺序登记并显示 16 个公开 npm 包的 shields.io 最新版本徽章，各包关联文档页正文前也显示对应徽章；点击打开 npm 包页面，历史版本不显示徽章。

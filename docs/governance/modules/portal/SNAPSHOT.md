@@ -6,7 +6,7 @@
 
 ## 业务快照
 
-一句话介绍 done-coding，入口指向 forge 和 cli，文案只取 npm 已发布包的描述。兼容性矩阵页按产品（create-done-coding 的模板、forge 消费者、cli 子命令）列出被测版本、通过数和每个用例的通过或失败与未通过的步骤，并写明验收日期与环境；没有结果时显示「暂无验收结果」。门户已启用 Umami Cloud 统计，隐私说明输出启用版，写明 Umami 记录的内容、IP 处理方式，以及脚本只加载在门户和文档页、产品演示页不加载；脚本只在 `done-coding.github.io` 线上域名上报，记录页面路径时不含查询参数。门户到产品站的点击记为 `portal-to-forge`、`portal-to-cli` 事件。
+一句话介绍 done-coding，入口指向 forge 和 cli，文案只取 npm 已发布包的描述。兼容性矩阵页按产品（create-done-coding 的模板、forge 消费者、cli 子命令）列出被测版本、通过数和每个用例的通过或失败与未通过的步骤，并写明验收日期与环境；没有结果时显示「暂无验收结果」。门户已启用 Umami Cloud 统计，隐私说明输出启用版，写明 Umami 记录的内容、IP 处理方式，以及脚本只加载在门户和文档页、产品演示页不加载；脚本只在 `done-coding.github.io` 线上域名上报，记录页面路径时不含查询参数。隐私说明在统计开关内容块之外披露 forge 与 cli 的 npm 徽章图片由浏览器从 img.shields.io 加载，服务会收到 IP 和浏览器信息，徽章请求不带来源页（`referrerpolicy="no-referrer"`），两种统计开关都显示。门户到产品站的点击记为 `portal-to-forge`、`portal-to-cli` 事件。
 
 ## UX 快照
 
