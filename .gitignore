@@ -4,3 +4,4 @@ dist/
 .vitepress/cache/
 .vitepress/.temp/
 .generated/
+test-results/

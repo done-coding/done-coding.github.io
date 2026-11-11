@@ -1,6 +1,8 @@
 // 产品站的站点外壳：读内容产物，生成 VitePress 源目录、导航、版本切换和首页，发布演示。
 import {
   cpSync,
+  existsSync,
+  statSync,
   mkdirSync,
   readFileSync,
   rmSync,
@@ -136,17 +138,73 @@ const searchOptions = {
  * 站点配置工厂，由各产品站的 .vitepress/config.mjs 调用。
  * SITE_CONTENT_DIR 仅供测试指向夹具或反例，正式构建读站点自己的 content/。
  */
-export const defineProductSite = ({ configUrl, base, title, tagline }) => {
+export const defineProductSite = ({
+  configUrl,
+  base,
+  title,
+  tagline,
+  packages = [],
+}) => {
   const siteRoot = fileURLToPath(new URL("..", configUrl));
   const content = loadContent(
     process.env.SITE_CONTENT_DIR || join(siteRoot, "content"),
   );
+  const fail = (reason) => {
+    throw new Error(`产品站配置错误（${configUrl}）：packages ${reason}`);
+  };
+  if (!Array.isArray(packages)) {
+    fail("必须是数组");
+  }
+  const names = new Set();
+  const npmPackages = packages.map((item, index) => {
+    const name = item?.name;
+    if (
+      typeof name !== "string" ||
+      name.length > 214 ||
+      !/^(?:@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/.test(name) ||
+      ["node_modules", "favicon.ico"].includes(name)
+    ) {
+      fail(`[${index}].name 不是合法 npm 包名：${JSON.stringify(name)}`);
+    }
+    if (names.has(name)) {
+      fail(`name 重复：${name}`);
+    }
+    names.add(name);
+    if (item.doc === undefined) {
+      return { name };
+    }
+    const doc = item.doc;
+    if (
+      typeof doc !== "string" ||
+      doc === "" ||
+      /[\\?#:]/.test(doc) ||
+      doc.startsWith("/") ||
+      doc.split("/").includes("..")
+    ) {
+      fail(`[${index}].doc 必须是相对 docs/ 的路径：${JSON.stringify(doc)}`);
+    }
+    const path = posix.normalize(
+      doc.endsWith("/")
+        ? `${doc}index.md`
+        : doc.endsWith(".md")
+          ? doc
+          : `${doc}.md`,
+    );
+    const file = content && join(content.docsDir, path);
+    if (!file || !existsSync(file) || !statSync(file).isFile()) {
+      fail(`[${index}].doc 指向的当前版本文档不存在：${doc}`);
+    }
+    return { name, doc: `docs/${path}` };
+  });
   const srcDir = join(siteRoot, GENERATED_DIR);
   rmSync(srcDir, { recursive: true, force: true });
   mkdirSync(srcDir, { recursive: true });
 
   const site = defineSite({ base, title, description: tagline });
   site.srcDir = GENERATED_DIR;
+  if (npmPackages.length > 0) {
+    site.themeConfig.npmPackages = npmPackages;
+  }
   // 内容产物按纯 Markdown 渲染：原始 HTML 与 Vue 标签按文本显示，正文里的 `<T>` 不会被当作模板编译
   const demoHomes = new Map();
   site.markdown = {

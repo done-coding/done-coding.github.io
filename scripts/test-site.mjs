@@ -7,16 +7,19 @@ import {
   mkdtempSync,
   readFileSync,
   readdirSync,
+  realpathSync,
+  symlinkSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import { indexablePages, renderSitemap } from "./site-pages.mjs";
 
 const repo = resolve(import.meta.dirname, "..");
 const script = (name) => join(repo, "scripts", name);
-const tmp = mkdtempSync(join(tmpdir(), "site-test-"));
+const tmp = realpathSync(mkdtempSync(join(tmpdir(), "site-test-")));
 const failures = [];
 const testId = "test-website-id";
 
@@ -395,6 +398,13 @@ const testAnalytics = () => {
 
   const privacyOff = read(portalOff.dist, "privacy.html");
   const privacyOn = read(portalOn.dist, "privacy.html");
+  expect(
+    "两种统计开关都显示徽章隐私说明",
+    [privacyOff, privacyOn].every(
+      (html) =>
+        html.includes("img.shields.io") && html.includes("不携带来源页地址"),
+    ),
+  );
   expect("隐私说明未启用版写明未启用", privacyOff.includes("未启用访问统计"));
   expect("隐私说明未启用版不含 Umami 描述", !privacyOff.includes("Umami"));
   expect("隐私说明启用版写明 Umami", privacyOn.includes("Umami"));
@@ -607,11 +617,32 @@ const productSites = () =>
     existsSync(join(repo, dir, ".vitepress/config.mjs")),
   );
 
-const buildProduct = ({ dir }, name, contentDir) => {
+const buildProduct = (
+  { dir, base, name: title, packages },
+  name,
+  contentDir,
+) => {
+  const root = join(tmp, `${name}-site`);
+  const config = join(root, ".vitepress/config.mjs");
+  mkdirSync(join(root, ".vitepress/theme"), { recursive: true });
+  symlinkSync(
+    join(repo, "packages/site-kit/node_modules"),
+    join(root, "node_modules"),
+    "dir",
+  );
+  writeFileSync(
+    join(root, ".vitepress/theme/index.mjs"),
+    `export { default } from ${JSON.stringify(join(repo, "packages/site-kit/theme/index.mjs"))};`,
+  );
+  writeFileSync(
+    config,
+    `import { defineProductSite } from ${JSON.stringify(pathToFileURL(join(repo, "packages/site-kit/product.mjs")).href)};
+export default defineProductSite(${JSON.stringify({ configUrl: pathToFileURL(config).href, base, title, tagline: title, packages })});`,
+  );
   const outDir = join(tmp, name);
   const result = run(
     "pnpm",
-    ["exec", "vitepress", "build", "--outDir", outDir],
+    ["exec", "vitepress", "build", root, "--outDir", outDir],
     {
       cwd: join(repo, dir),
       env: { SITE_CONTENT_DIR: contentDir },
@@ -771,6 +802,10 @@ const testFixtureBuild = (site) => {
       home.includes(FIXTURE_VERSION) && home.includes(`${base}demo/`),
     );
     expect(`${name} 有内容时不显示建设中`, !home.includes("文档建设中"));
+    expect(
+      `${name} 未配 packages 不显示徽章`,
+      badgeCount(home) === 0 && badgeCount(docPage) === 0,
+    );
     const generic = read(built.dist, "docs/guide/generic.html");
     expect(
       `${name} 尖括号、标签与插值按文本显示`,
@@ -852,6 +887,68 @@ const testFixtureBuild = (site) => {
   }
 };
 
+const badgeCount = (html) =>
+  (html.match(/<img[^>]*src="https:\/\/img\.shields\.io\/npm\/v\//g) ?? [])
+    .length;
+
+const hasBadge = (html, name) =>
+  html.includes(`src="https://img.shields.io/npm/v/${name}?logo=npm"`) &&
+  html.includes(`alt="${name} 的 npm 版本"`) &&
+  html.includes(`referrerpolicy="no-referrer"`) &&
+  html.includes(
+    `href="https://www.npmjs.com/package/${name}" target="_blank" rel="noopener"`,
+  );
+
+const testPackageBadges = (site) => {
+  const name = "@done-coding/example";
+  const built = buildProduct(
+    { ...site, packages: [{ name, doc: "overview.md" }] },
+    `${site.name}-badges`,
+    fixture,
+  );
+  expect(`${site.name} 徽章夹具可构建`, built.status === 0, built.output);
+  if (built.status === 0) {
+    expect(
+      `${site.name} 首页包含包名与徽章`,
+      hasBadge(read(built.dist, "index.html"), name) &&
+        read(built.dist, "index.html").includes("npm 包"),
+    );
+    expect(
+      `${site.name} 对应文档页包含徽章`,
+      hasBadge(read(built.dist, "docs/overview.html"), name),
+    );
+    for (const path of [
+      `v/${OLDER_VERSION}/index.html`,
+      `v/${OLDER_VERSION}/docs/overview.html`,
+      "docs/guide/start.html",
+    ]) {
+      expect(
+        `${site.name} ${path} 不显示徽章`,
+        badgeCount(read(built.dist, path)) === 0,
+      );
+    }
+  }
+  for (const [label, packages, mention] of [
+    ["不存在的文档", [{ name, doc: "missing.md" }], "missing.md"],
+    ["非法包名", [{ name: "bad name" }], "name"],
+    ["重复包名", [{ name }, { name }], "重复"],
+    ["越界文档", [{ name, doc: "../overview.md" }], "相对 docs/"],
+  ]) {
+    const result = buildProduct(
+      { ...site, packages },
+      `${site.name}-badges-${label}`,
+      fixture,
+    );
+    expect(
+      `${site.name} packages ${label} 构建失败并说明`,
+      result.status !== 0 &&
+        result.output.includes("产品站配置错误") &&
+        result.output.includes(mention),
+      result.output,
+    );
+  }
+};
+
 /** 正式站：按是否已有内容产物分别判断，且不含夹具内容 */
 const testFormalSite = (site) => {
   const { name, base } = site;
@@ -868,6 +965,23 @@ const testFormalSite = (site) => {
       formalHome.includes("文档建设中"),
     );
   }
+  expect(
+    `${name} 正式首页徽章数量`,
+    badgeCount(formalHome) === (base === "/forge/" ? 12 : 16),
+  );
+  if (base === "/cli/") {
+    const nav = JSON.parse(
+      read(join(repo, site.dir, "content/0.24.0"), "nav.json"),
+    );
+    for (const { text, link } of nav.filter(({ link }) =>
+      link.startsWith("packages/"),
+    )) {
+      expect(
+        `cli ${text} 文档页含对应徽章`,
+        hasBadge(read(formal, `docs/${link.replace(/\.md$/, ".html")}`), text),
+      );
+    }
+  }
   const leaked = allText(formal).find((text) => text.includes(SAMPLE_MARK));
   expect(`${name} 正式站不含夹具内容`, leaked === undefined);
 };
@@ -876,9 +990,10 @@ const testProductSite = (site) => {
   const { name, base } = site;
 
   testFixtureBuild(site);
+  testPackageBadges(site);
 
   const single = buildProduct(
-    site,
+    { ...site, packages: [] },
     `${name}-single-out`,
     brokenContent(`${name}-single`, (dir) =>
       rmSync(join(dir, OLDER_VERSION), { recursive: true }),
@@ -887,6 +1002,7 @@ const testProductSite = (site) => {
   expect(`${name} 单版本可构建`, single.status === 0, single.output);
   if (single.status === 0) {
     const home = read(single.dist, "index.html");
+    expect(`${name} 空 packages 不显示徽章`, badgeCount(home) === 0);
     expect(
       `${name} 单版本不显示版本切换`,
       !home.includes(`${FIXTURE_VERSION}（当前）`) &&

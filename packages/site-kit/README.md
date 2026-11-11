@@ -36,3 +36,16 @@ export { default } from "@done-coding/site-kit/theme";
 - MIT 许可证。
 
 `smoke/` 是最小冒烟站点，`fixtures/` 是内容产物样例，都只由 `scripts/test-site.mjs` 使用，不发布。
+
+## npm 版本徽章
+
+`defineProductSite` 可选 `packages` 数组，每项为 `{ name, doc? }`：`name` 是合法且不重复的 npm 包名；`doc` 是相对当前版本 `docs/` 的文档路径，可省略 `.md`，目录以 `/` 结尾。提供 `doc` 时文档必须存在，否则构建失败并说明。未传或空数组保持原有行为。
+
+```js
+packages: [
+  { name: "@done-coding/forge" },
+  { name: "done-coding", doc: "packages/cli.md" },
+];
+```
+
+主题经 `themeConfig.npmPackages` 接收包清单：当前版本首页 hero 下方显示「npm 包」列表，对应文档页正文上方显示徽章，历史版本不显示。徽章图片来自 `https://img.shields.io/npm/v/<name>?logo=npm`，点击在新窗口打开 npm 包页面；构建不请求网络，访客浏览器加载图片时会请求第三方服务，隐私说明同时披露。
